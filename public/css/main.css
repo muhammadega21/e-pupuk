@@ -1,5 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+
+:root {
+    --color-primary: #0d6efd;
+}
+
 body {
     background: #f9fafb;
+    color: #1f2937;
+    font-family: Nunito, sans-serif;
 }
 
 label:has(+ input[required])::after,
@@ -13,4 +21,16 @@ input.error,
 textarea.error,
 select.error {
     border-color: rgb(247, 19, 19);
+}
+
+#sidebar {
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+#sidebar .side-menu li a:hover,
+#sidebar .side-menu li a.active {
+    background-color: #eff6ff;
+    color: var(--color-primary);
+    transition: all 0.2s ease-in-out;
 }

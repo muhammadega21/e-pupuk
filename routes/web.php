@@ -18,7 +18,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::get('/', [FrontendHomeController::class, 'index'])->name('frontend.home');
 
 // Dashboard
-Route::middleware('admin')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardHomeController::class, 'index'])->name('dashboard.home');
     });
