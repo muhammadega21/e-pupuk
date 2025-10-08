@@ -30,6 +30,10 @@ Route::middleware('auth')->group(function () {
         // Master Data
         Route::controller(RoleController::class)->group(function () {
             Route::get('/role', 'index')->name('dashboard.master-data.role');
+            Route::get('/role/{id}/edit', 'edit')->name('dashboard.master-data.role.edit');
+            Route::post('/role', 'store')->name('dashboard.master-data.role.store');
+            Route::put('/role/{id}', 'update')->name('dashboard.master-data.role.update');
+            Route::delete('/role/{id}', 'destroy')->name('dashboard.master-data.role.destroy');
         });
 
         Route::controller(KaryawanController::class)->group(function () {

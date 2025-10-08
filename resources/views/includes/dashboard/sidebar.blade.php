@@ -1,7 +1,7 @@
 <section id="sidebar" class="bg-white w-0 md:w-[250px] border-r border-gray-200 h-screen flex flex-col justify-between">
     <div class="mt-4">
-        <div class="brand flex items-center gap-x-2 justify-center">
-            <i class="fa-solid fa-cart-shopping text-2xl text-blue-600"></i>
+        <div class="brand flex items-center gap-x-2 justify-center text-[--color-primary]">
+            <i class="fa-solid fa-cart-shopping text-2xl"></i>
             <h1 class="font-bold text-2xl">UD Sriwindo</h1>
         </div>
         <div class="side-menu mt-4">
