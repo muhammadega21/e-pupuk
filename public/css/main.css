@@ -9,28 +9,3 @@ body {
     color: #1f2937;
     font-family: Nunito, sans-serif;
 }
-
-label:has(+ input[required])::after,
-label:has(+ textarea[required])::after,
-label:has(+ select[required])::after {
-    content: " *";
-    color: red;
-}
-
-input.error,
-textarea.error,
-select.error {
-    border-color: rgb(247, 19, 19);
-}
-
-#sidebar {
-    overflow-x: auto;
-    scrollbar-width: thin;
-}
-
-#sidebar .side-menu li a:hover,
-#sidebar .side-menu li a.active {
-    background-color: #eff6ff;
-    color: var(--color-primary);
-    transition: all 0.2s ease-in-out;
-}

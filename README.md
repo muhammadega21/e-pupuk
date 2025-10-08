@@ -16,7 +16,6 @@ cd e-pupuk
 
 ```bash
 composer install
-npm install
 ```
 
 -   Open in your preferred editor (VS Code example):
@@ -61,10 +60,9 @@ php artisan migrate --seed
 php artisan storage:link
 ```
 
--   Start development server with 2 terminal:
+-   Start development server:
 
 ```bash
-npm run dev
 php artisan serve
 ```
 

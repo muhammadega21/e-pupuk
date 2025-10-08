@@ -62,18 +62,6 @@
                     </a>
                 </li>
                 @if (Auth::user()->hasRole(['admin', 'karyawan']))
-                    <li>
-                        <a href="#" class="flex items-center gap-x-3 px-4 py-2 rounded-md">
-                            <i class="fa-solid fa-credit-card"></i>
-                            <span>Pembayaran</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-x-3 px-4 py-2 rounded-md">
-                            <i class="fa-solid fa-truck"></i>
-                            <span>Pengiriman</span>
-                        </a>
-                    </li>
                     <li class="px-4 mt-4 text-gray-500 uppercase text-xs font-semibold">Laporan</li>
                     <li>
                         <a href="#" class="flex items-center gap-x-3 px-4 py-2 rounded-md">
