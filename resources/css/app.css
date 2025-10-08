@@ -4,3 +4,9 @@
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+
+@layer utilities {
+    .page-title {
+        @apply text-xl font-semibold;
+    }
+}

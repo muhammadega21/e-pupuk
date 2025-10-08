@@ -19,8 +19,10 @@
     @include('includes.dashboard.navbar')
     <main class="h-screen flex">
         @include('includes.dashboard.sidebar')
-        <div class="mt-16">
-            {{ $slot }}
+        <div class="mt-16 px-8 py-10">
+            <div class="px-4 py-2 border border-gray-300 rounded-md">
+                {{ $slot }}
+            </div>
         </div>
     </main>
     @stack('scripts')

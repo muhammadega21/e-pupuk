@@ -20,9 +20,8 @@
             </script>
         @endpush
     @endif
-    <h1>Home</h1>
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit">Logout</button>
-    </form>
+    <div class="page-title">
+        <h1>{{ $title }}</h1>
+    </div>
+
 </x-dashboard-layout>
