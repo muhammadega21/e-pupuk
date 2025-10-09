@@ -1,0 +1,23 @@
+user:
+1. activity register
+2. activity login (admin/user)
+3. activity pesan pupuk (beserta metode pengiriman, pembayaran dan invoice)
+4. activity cek status pesanan
+=> menu: dashboard berupa katalog, pesanan, profile
+
+admin/karyawan:
+1. activity kelola data pupuk
+2. activity kelola data pelanggan
+3. activity kelola data karyawan
+4. activity kelola data pesanan (beserta verifikasi pembayaran dan kelola status pengiriman)
+5. activity laporan produksi
+6. activity laporan penjualan
+=> menu: dashboard berupa grafik penjualan, data master (pelanggan, karyawan, pupuk), pesanan (pembayaran, pengiriman), laporan (penjualan, produksi), profile
+
+===================
+
+1. Use Case v
+2. Activity Diagram v
+3. Class Diagram v
+4. Sequence Diagram v
+5. Design Terinci v
