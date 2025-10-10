@@ -6,9 +6,7 @@
 - list kelola data karyawan
 - list kelola data pelanggan
 - list kelola data role
-- list kelola data penjualan
-- list kelola data pembayaran (invoice)
-- list kelola data pengiriman
+- list kelola data penjualan (aka pesanan)
 - list kelola data produksi
 - list laporan penjualan
 - list laporan produksi
