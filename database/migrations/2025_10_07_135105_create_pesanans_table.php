@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Customer;
 use App\Models\User;
+use App\Models\UserData;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pesanan', function (Blueprint $table) {
             $table->id('pesanan_id');
-            $table->foreignIdFor(Customer::class, 'customer_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(UserData::class, 'data_user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignIdFor(User::class, 'created_by')->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'handled_by')->nullable()->constrained()->nullOnDelete();
             $table->integer('order_no')->unique();

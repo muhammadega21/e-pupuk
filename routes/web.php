@@ -30,14 +30,18 @@ Route::middleware('auth')->group(function () {
         // Master Data
         Route::controller(RoleController::class)->group(function () {
             Route::get('/role', 'index')->name('dashboard.master-data.role');
-            Route::get('/role/{id}/edit', 'edit')->name('dashboard.master-data.role.edit');
             Route::post('/role', 'store')->name('dashboard.master-data.role.store');
+            Route::get('/role/{id}/edit', 'edit')->name('dashboard.master-data.role.edit');
             Route::put('/role/{id}', 'update')->name('dashboard.master-data.role.update');
             Route::delete('/role/{id}', 'destroy')->name('dashboard.master-data.role.destroy');
         });
 
         Route::controller(KaryawanController::class)->group(function () {
             Route::get('/karyawan', 'index')->name('dashboard.master-data.karyawan');
+            Route::post('/karyawan', 'store')->name('dashboard.master-data.karyawan.store');
+            Route::get('/karyawan/{id}/edit', 'edit')->name('dashboard.master-data.karyawan.edit');
+            Route::put('/karyawan/{id}', 'update')->name('dashboard.master-data.karyawan.update');
+            Route::delete('/karyawan/{id}', 'destroy')->name('dashboard.master-data.karyawan.destroy');
         });
 
         Route::controller(PelangganController::class)->group(function () {

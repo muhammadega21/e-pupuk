@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -42,12 +43,16 @@ class AuthController extends Controller
             'no_telepon.required' => 'Nomor Telepon harus diisi'
         ]);
 
-        User::create([
-            'nama' => $request->nama,
+        $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        UserData::create([
+            'user_id' => $user->user_id,
+            'nama' => $request->nama,
             'alamat' => $request->alamat,
-            'no_telepon' => $request->no_telepon
+            'telepon' => $request->no_telepon
         ]);
 
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silahkan login');
@@ -72,9 +77,9 @@ class AuthController extends Controller
         }
 
         if (Auth::user()->hasRole(['admin', 'karyawan'])) {
-            return redirect()->route('dashboard.home')->with('success', 'Selamat datang, ' . Auth::user()->nama . '!');
+            return redirect()->route('dashboard.home')->with('success', 'Selamat datang, ' . Auth::user()->user_data->nama . '!');
         }
-        return redirect()->route('frontend.home')->with('success', 'Selamat datang, ' . Auth::user()->nama . '!');
+        return redirect()->route('frontend.home')->with('success', 'Selamat datang, ' . Auth::user()->user_data->nama . '!');
     }
 
 

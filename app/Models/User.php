@@ -21,7 +21,7 @@ class User extends Authenticatable
 
     protected $table = 'user';
     protected $primaryKey = 'user_id';
-    protected $fillable = ['role_id', 'nama', 'email', 'password', 'alamat', 'telepon'];
+    protected $fillable = ['role_id', 'nama', 'email', 'password'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -50,9 +50,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
-    public function customer()
+    public function user_data()
     {
-        return $this->hasOne(Customer::class, 'user_id');
+        return $this->hasOne(UserData::class, 'user_id', 'user_id');
     }
     public function createdOrders()
     {

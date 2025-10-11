@@ -15,12 +15,9 @@ return new class extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->id('user_id');
             $table->foreignIdFor(Role::class, 'role_id')->constrained()->onDelete('cascade');
-            $table->string('nama');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('alamat');
-            $table->string('telepon');
             $table->rememberToken();
             $table->timestamps();
         });
