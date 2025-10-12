@@ -46,10 +46,18 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(PelangganController::class)->group(function () {
             Route::get('/pelanggan', 'index')->name('dashboard.master-data.pelanggan');
+            Route::post('/pelanggan', 'store')->name('dashboard.master-data.pelanggan.store');
+            Route::get('/pelanggan/{id}/edit', 'edit')->name('dashboard.master-data.pelanggan.edit');
+            Route::put('/pelanggan/{id}', 'update')->name('dashboard.master-data.pelanggan.update');
+            Route::delete('/pelanggan/{id}', 'destroy')->name('dashboard.master-data.pelanggan.destroy');
         });
 
         Route::controller(PupukController::class)->group(function () {
             Route::get('/pupuk', 'index')->name('dashboard.master-data.pupuk');
+            Route::post('/pupuk', 'store')->name('dashboard.master-data.pupuk.store');
+            Route::get('/pupuk/{id}/edit', 'edit')->name('dashboard.master-data.pupuk.edit');
+            Route::put('/pupuk/{id}', 'update')->name('dashboard.master-data.pupuk.update');
+            Route::delete('/pupuk/{id}', 'destroy')->name('dashboard.master-data.pupuk.destroy');
         });
 
         Route::controller(ProduksiController::class)->group(function () {

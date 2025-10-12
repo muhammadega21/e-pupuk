@@ -20,9 +20,8 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Karyawan</th>
+                    <th>Email</th>
                     <th>Role</th>
-                    <th>Alamat</th>
-                    <th>No Telepon</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -51,18 +50,13 @@
                             name: 'user_data.nama',
                         },
                         {
+                            data: 'email',
+                            name: 'email',
+                            orderable: false,
+                        },
+                        {
                             data: 'role.role_name',
                             name: 'role.role_name',
-                        },
-                        {
-                            data: 'user_data.alamat',
-                            name: 'user_data.alamat',
-                            orderable: false,
-                        },
-                        {
-                            data: 'user_data.telepon',
-                            name: 'user_data.telepon',
-                            orderable: false,
                         },
                         {
                             data: 'action',
@@ -137,7 +131,6 @@
                     <select name="role_id" id="role_id"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required>
-                        <option value="">-- Pilih Role --</option>
                         @foreach ($roles as $role)
                             <option value="{{ $role->role_id }}">{{ $role->role_name }}</option>
                         @endforeach
