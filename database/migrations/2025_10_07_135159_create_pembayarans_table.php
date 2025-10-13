@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id('pembayaran_id');
             $table->foreignIdFor(Pesanan::class, 'pesanan_id')->constrained()->onDelete('cascade');
-            $table->dateTime('tanggal');
+            $table->date('tanggal');
             $table->enum('metode', ['cash', 'transfer']);
             $table->decimal('total_bayar');
             $table->string('bukti_bayar')->nullable();

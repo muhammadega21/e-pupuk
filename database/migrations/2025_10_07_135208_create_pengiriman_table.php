@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('telepon');
             $table->string('alamat');
             $table->decimal('ongkir');
-            $table->dateTime('tgl_kirim');
-            $table->dateTime('tgl_terima');
+            $table->date('tgl_kirim');
+            $table->date('tgl_terima');
             $table->enum('status', ['pending', 'shipped', 'delivered']);
             $table->timestamps();
         });

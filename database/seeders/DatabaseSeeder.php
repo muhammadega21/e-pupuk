@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Produksi;
+use App\Models\Pupuk;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserData;
@@ -66,6 +68,35 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Pelanggan',
             'alamat' => 'Padang, Sumatera Barat',
             'telepon' => '08123456789'
+        ]);
+
+        Pupuk::create([
+            'nama' => 'Urea',
+            'jenis' => 'Kimia',
+            'berat' => 50,
+            'harga' => 250000,
+            'stok' => 110,
+        ]);
+
+        Pupuk::create([
+            'nama' => 'NPK',
+            'jenis' => 'Kimia',
+            'berat' => 50,
+            'harga' => 250000,
+            'stok' => 100,
+        ]);
+
+        Produksi::create([
+            'barang_id' => 1,
+            'tanggal_produksi' => date('Y-m-d'),
+            'jumalah_karung' => 10,
+            'note' => 'Produksi Urea'
+        ]);
+
+        Produksi::create([
+            'barang_id' => 2,
+            'tanggal_produksi' => date('Y-m-d'),
+            'jumalah_karung' => 10,
         ]);
     }
 }

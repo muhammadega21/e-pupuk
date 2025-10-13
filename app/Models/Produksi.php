@@ -8,8 +8,8 @@ class Produksi extends Model
 {
     protected $table = 'produksi';
     protected $primaryKey = 'produksi_id';
-    protected $fillable = ['barang_id', 'tanggal_produksi', 'jumlah_karung', 'status_produksi'];
-    public function pupuk()
+    protected $fillable = ['barang_id', 'tanggal_produksi', 'jumlah_karung', 'note'];
+    public function barang()
     {
         return $this->belongsTo(Pupuk::class, 'barang_id');
     }

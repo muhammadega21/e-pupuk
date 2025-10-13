@@ -62,6 +62,10 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(ProduksiController::class)->group(function () {
             Route::get('/produksi', 'index')->name('dashboard.master-data.produksi');
+            Route::post('/produksi', 'store')->name('dashboard.master-data.produksi.store');
+            Route::get('/produksi/{id}/edit', 'edit')->name('dashboard.master-data.produksi.edit');
+            Route::put('/produksi/{id}', 'update')->name('dashboard.master-data.produksi.update');
+            Route::delete('/produksi/{id}', 'destroy')->name('dashboard.master-data.produksi.destroy');
         });
     });
 });

@@ -39,9 +39,10 @@
                     serverSide: true,
                     ajax: "{{ route('dashboard.master-data.role') }}",
                     columns: [{
-                            data: 'role_id',
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
                             orderable: false,
-                            searchable: false,
+                            searchable: false
                         },
                         {
                             data: 'role_name',

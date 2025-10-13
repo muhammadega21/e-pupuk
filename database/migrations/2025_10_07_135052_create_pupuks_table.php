@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('berat');
             $table->decimal('harga');
             $table->integer('stok');
-            $table->enum('status', ['aktif', 'tidak aktif']);
+            $table->enum('status', ['aktif', 'tidak aktif'])->default('aktif');
             $table->timestamps();
         });
     }
