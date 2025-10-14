@@ -8,7 +8,7 @@ class Pupuk extends Model
 {
     protected $table = 'pupuk';
     protected $primaryKey = 'barang_id';
-    protected $fillable = ['nama', 'jenis', 'berat', 'harga', 'stok', 'status'];
+    protected $fillable = ['nama', 'jenis', 'berat', 'harga', 'stok', 'status', 'slug'];
     public function produksi()
     {
         return $this->hasMany(Produksi::class, 'barang_id');
