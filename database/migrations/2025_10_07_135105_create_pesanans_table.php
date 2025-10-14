@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(UserData::class, 'data_user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignIdFor(User::class, 'created_by')->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'handled_by')->nullable()->constrained()->nullOnDelete();
+            $table->date('tanggal_transaksi');
             $table->integer('order_no')->unique();
             $table->enum('channel', ['online', 'store']);
             $table->enum('order_type', ['delivery', 'pickup']);
