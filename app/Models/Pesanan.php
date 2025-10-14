@@ -8,10 +8,10 @@ class Pesanan extends Model
 {
     protected $table = 'pesanan';
     protected $primaryKey = 'pesanan_id';
-    protected $fillable = ['customer_id', 'created_by', 'handled_by', 'order_no', 'channel', 'order_type', 'payment_status', 'fulfillment_status', 'total_karung', 'total_bayar'];
-    public function customer()
+    protected $fillable = ['data_user_id', 'created_by', 'handled_by', 'tanggal_transaksi', 'order_no', 'channel', 'order_type', 'payment_status', 'fulfillment_status', 'total_karung', 'total_bayar'];
+    public function user_data()
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(UserData::class, 'data_user_id');
     }
     public function createdBy()
     {
