@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard\MasterData;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\UserData;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 

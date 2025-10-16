@@ -220,4 +220,10 @@
             $('#editDeliverySection').addClass('hidden');
         }
     });
+
+    $(document).on('click', '[data-modal-hide="editPesanan"]', function() {
+        const editModalEl = document.getElementById('editPesanan');
+        const modal = editModalEl.__xModal ?? new Modal(editModalEl);
+        modal.hide();
+    });
 </script>

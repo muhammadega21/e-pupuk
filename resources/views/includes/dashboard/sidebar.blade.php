@@ -1,4 +1,5 @@
-<section id="sidebar" class="bg-white w-0 md:w-[250px] border-r border-gray-200 h-screen flex flex-col justify-between">
+<section id="sidebar"
+    class="bg-white fixed top-0 left-0 h-full w-[250px] border-r border-gray-200 flex flex-col justify-between transform transition-transform duration-300 -translate-x-full md:translate-x-0 z-40">
     <div class="mt-4">
         <div class="brand flex items-center gap-x-2 justify-center text-[--color-primary]">
             <i class="fa-solid fa-cart-shopping text-2xl"></i>

@@ -20,8 +20,12 @@
     @include('includes.dashboard.navbar')
     <main class="h-screen flex">
         @include('includes.dashboard.sidebar')
-        <div class="w-full md:w-[calc(100%-250px)] mt-16 px-8 py-10">
-            <div class="bg-white px-4 py-2 border border-gray-300 rounded-md">
+        <div id="overlay"
+            class="fixed inset-0 bg-black bg-opacity-40 opacity-0 pointer-events-none transition-opacity duration-300 z-30 md:hidden">
+        </div>
+
+        <div class="w-full md:w-[calc(100%-250px)] ms-auto mt-16 px-5 md:px-8 py-10 ">
+            <div class="bg-white px-4 py-2 border border-gray-300 rounded-md w-max md:w-full overflow-x-auto">
                 {{ $slot }}
             </div>
         </div>
@@ -31,6 +35,8 @@
             darkMode: 'class',
         }
     </script>
+
+    <script src="{{ asset('js/dashboard/app.js') }}"></script>
     @stack('scripts')
 </body>
 

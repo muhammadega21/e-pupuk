@@ -26,7 +26,7 @@ class PesananController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $editBtn = '<button data-id="' . $row->pesanan_id . '" class="edit-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm mr-2">Edit</button>';
-                    $detailBtn = '<button data-id="' . $row->pesanan_id . '" class="detail-btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm">Detail</button>';
+                    $detailBtn = '<a href="' . route('dashboard.transaksi.detail-pesanan', $row->pesanan_id) . '" class="detail-btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm">Detail</a>';
                     $deleteForm = '
                         <form action="' . route('dashboard.transaksi.pesanan.destroy', $row->pesanan_id) . '" method="POST" class="delete-form inline-block ml-1">
                             ' . csrf_field() . '
