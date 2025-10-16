@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\HomeController as DashboardHomeController;
 use App\Http\Controllers\Dashboard\MasterData\KaryawanController;
 use App\Http\Controllers\Dashboard\MasterData\PelangganController;
 use App\Http\Controllers\Dashboard\MasterData\ProduksiController;
 use App\Http\Controllers\Dashboard\MasterData\PupukController;
 use App\Http\Controllers\Dashboard\MasterData\RoleController;
+use App\Http\Controllers\Dashboard\Transaksi\PesananController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,6 +68,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/produksi/{id}/edit', 'edit')->name('dashboard.master-data.produksi.edit');
             Route::put('/produksi/{id}', 'update')->name('dashboard.master-data.produksi.update');
             Route::delete('/produksi/{id}', 'destroy')->name('dashboard.master-data.produksi.destroy');
+        });
+
+        // Transaksi
+        Route::controller(PesananController::class)->group(function () {
+            Route::get('/pesanan', 'index')->name('dashboard.transaksi.pesanan');
+            Route::get('/pesanan/{id}', 'detail')->name('dashboard.transaksi.pesanan.detail');
+            Route::post('/pesanan', 'store')->name('dashboard.transaksi.pesanan.store');
+            Route::get('/pesanan/{id}/edit', 'edit')->name('dashboard.transaksi.pesanan.edit');
+            Route::put('/pesanan/{id}', 'update')->name('dashboard.transaksi.pesanan.update');
+            Route::delete('/pesanan/{id}', 'destroy')->name('dashboard.transaksi.pesanan.destroy');
         });
     });
 });

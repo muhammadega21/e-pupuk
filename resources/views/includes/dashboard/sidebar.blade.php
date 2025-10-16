@@ -56,7 +56,8 @@
                     <li class="px-4 mt-4 text-gray-500 uppercase text-xs font-semibold">Transaksi</li>
                 @endif
                 <li>
-                    <a href="#" class="flex items-center gap-x-3 px-4 py-2 rounded-md">
+                    <a href="{{ route('dashboard.transaksi.pesanan') }}"
+                        class="{{ Route::is('dashboard.transaksi.pesanan') ? 'active' : '' }} flex items-center gap-x-3 px-4 py-2 rounded-md">
                         <i class="fa-solid fa-box"></i>
                         <span>Pesanan</span>
                     </a>

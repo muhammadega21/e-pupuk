@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignIdFor(Pesanan::class, 'pesanan_id')->constrained()->onDelete('cascade');
             $table->date('tanggal');
             $table->enum('metode', ['cash', 'transfer']);
-            $table->decimal('total_bayar');
-            $table->string('bukti_bayar')->nullable();
+            $table->decimal('total_bayar', 15, 2);
+            $table->string('bukti_url')->nullable();
             $table->enum('status', ['pending', 'verified', 'rejected']);
             $table->timestamps();
         });

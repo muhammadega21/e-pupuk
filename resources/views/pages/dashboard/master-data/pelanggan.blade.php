@@ -98,25 +98,6 @@
                     alert('Gagal memuat data pelanggan.');
                 });
             });
-
-
-            $(document).on('submit', '.promotion-form', function(e) {
-                e.preventDefault();
-                const form = this;
-
-                Swal.fire({
-                    title: 'Yakin ingin melanjutkan?',
-                    text: 'Perubahan role akan segera diterapkan.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, lanjutkan!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
         </script>
 
         <x-modal id="editPelanggan" title="Edit Pelanggan">

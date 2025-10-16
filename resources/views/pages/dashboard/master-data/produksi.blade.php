@@ -63,6 +63,9 @@
                         {
                             data: 'note',
                             name: 'note',
+                            render: function(data) {
+                                return data ? data : '-';
+                            }
                         },
                         {
                             data: 'action',

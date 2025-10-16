@@ -13,7 +13,7 @@ class DetailPesanan extends Model
     {
         return $this->belongsTo(Pesanan::class, 'pesanan_id');
     }
-    public function pupuk()
+    public function barang()
     {
         return $this->belongsTo(Pupuk::class, 'barang_id');
     }

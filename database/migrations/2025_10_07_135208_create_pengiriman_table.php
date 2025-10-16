@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('alamat');
             $table->decimal('ongkir');
             $table->date('tgl_kirim');
-            $table->date('tgl_terima');
+            $table->date('tgl_terima')->nullable();
             $table->enum('status', ['pending', 'shipped', 'delivered']);
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('jenis');
             $table->integer('berat');
-            $table->decimal('harga');
+            $table->decimal('harga', 15, 2);
             $table->integer('stok');
             $table->enum('status', ['aktif', 'tidak aktif'])->default('aktif');
             $table->string('slug')->unique();

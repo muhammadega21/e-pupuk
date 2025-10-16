@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Pesanan::class, 'pesanan_id')->constrained()->onDelete('cascade');
             $table->foreignIdFor(Pupuk::class, 'barang_id')->constrained()->onDelete('cascade');
             $table->integer('qty_karung');
-            $table->decimal('subtotal');
+            $table->decimal('subtotal', 15, 2);
             $table->timestamps();
         });
     }

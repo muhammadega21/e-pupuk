@@ -76,6 +76,7 @@ class DatabaseSeeder extends Seeder
             'berat' => 50,
             'harga' => 250000,
             'stok' => 110,
+            'slug' => 'urea',
         ]);
 
         Pupuk::create([
@@ -84,19 +85,20 @@ class DatabaseSeeder extends Seeder
             'berat' => 50,
             'harga' => 250000,
             'stok' => 100,
+            'slug' => 'npk',
         ]);
 
         Produksi::create([
             'barang_id' => 1,
             'tanggal_produksi' => date('Y-m-d'),
-            'jumalah_karung' => 10,
+            'jumlah_karung' => 10,
             'note' => 'Produksi Urea'
         ]);
 
         Produksi::create([
             'barang_id' => 2,
             'tanggal_produksi' => date('Y-m-d'),
-            'jumalah_karung' => 10,
+            'jumlah_karung' => 10,
         ]);
     }
 }

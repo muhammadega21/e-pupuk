@@ -19,13 +19,13 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'created_by')->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'handled_by')->nullable()->constrained()->nullOnDelete();
             $table->date('tanggal_transaksi');
-            $table->integer('order_no')->unique();
+            $table->string('order_no')->unique();
             $table->enum('channel', ['online', 'store']);
             $table->enum('order_type', ['delivery', 'pickup']);
             $table->enum('payment_status', ['unpaid', 'pending', 'paid', 'failed', 'redunded']);
             $table->enum('fulfillment_status', ['new', 'processing', 'shipped', 'delivered', 'canceled']);
             $table->integer('total_karung');
-            $table->decimal('total_bayar');
+            $table->decimal('total_bayar', 15, 2);
             $table->timestamps();
         });
     }
