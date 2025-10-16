@@ -63,14 +63,12 @@ class PesananController extends Controller
             'metode_pembayaran' => 'required|in:cash,transfer',
             'bukti_url' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
-            // hanya wajib jika delivery
             'nama_penerima' => 'required_if:order_type,delivery',
             'telepon' => 'required_if:order_type,delivery',
             'alamat' => 'required_if:order_type,delivery',
         ]);
 
         DB::transaction(function () use ($validated, $request) {
-            // Upload bukti pembayaran jika transfer
             $buktiPath = null;
             if ($request->hasFile('bukti_url')) {
                 $buktiPath = Storage::disk('public')->putFile('bukti_pembayaran', $request->file('bukti_url'));
@@ -91,7 +89,6 @@ class PesananController extends Controller
                 'total_bayar' => $validated['total_bayar'],
             ]);
 
-            // Simpan detail pesanan
             foreach ($validated['barang_id'] as $i => $barangId) {
                 $barang = Pupuk::find($barangId);
                 $qty = $validated['total_karung'][$i];
@@ -105,7 +102,6 @@ class PesananController extends Controller
                 ]);
             }
 
-            // Simpan data pengiriman (jika delivery)
             $ongkir = $this->hitungOngkir($request->alamat);
 
             if ($validated['order_type'] === 'delivery') {
@@ -120,7 +116,6 @@ class PesananController extends Controller
                 ]);
             }
 
-            // Simpan data pembayaran
             $status = $validated['metode_pembayaran'] === 'cash' ? 'verified' : 'pending';
             Pembayaran::create([
                 'pesanan_id' => $pesanan->pesanan_id,
@@ -131,7 +126,6 @@ class PesananController extends Controller
                 'status' => $status,
             ]);
 
-            // Update stok pupuk
             foreach ($validated['barang_id'] as $i => $barangId) {
                 Pupuk::where('barang_id', $barangId)->decrement('stok', $validated['total_karung'][$i]);
             }
@@ -167,7 +161,6 @@ class PesananController extends Controller
         ]);
 
         DB::transaction(function () use ($validated, $request, $pesanan) {
-            // Update bukti pembayaran jika ada file baru
             $buktiPath = $pesanan->pembayaran->bukti_url;
             if ($request->hasFile('bukti_url')) {
                 if ($buktiPath) {
@@ -176,20 +169,17 @@ class PesananController extends Controller
                 $buktiPath = Storage::disk('public')->putFile('bukti_pembayaran', $request->file('bukti_url'));
             }
 
-            // Update data pesanan utama
             $pesanan->update([
                 'order_type' => $validated['order_type'],
                 'total_karung' => array_sum($validated['total_karung']),
                 'total_bayar' => $validated['total_bayar'],
             ]);
 
-            // Hapus detail lama dan stok kembali dulu
             foreach ($pesanan->detailPesanan as $detail) {
                 Pupuk::where('barang_id', $detail->barang_id)->increment('stok', $detail->qty_karung);
                 $detail->delete();
             }
 
-            // Simpan ulang detail baru
             foreach ($validated['barang_id'] as $i => $barangId) {
                 $barang = Pupuk::find($barangId);
                 $qty = $validated['total_karung'][$i];
@@ -202,11 +192,9 @@ class PesananController extends Controller
                     'subtotal' => $subtotal,
                 ]);
 
-                // Kurangi stok baru
                 Pupuk::where('barang_id', $barangId)->decrement('stok', $qty);
             }
 
-            // Update ongkir dan pengiriman jika delivery
             if ($validated['order_type'] === 'delivery') {
                 $ongkir = $this->hitungOngkir($request->alamat);
                 $pesanan->pengiriman()->updateOrCreate(
@@ -220,7 +208,6 @@ class PesananController extends Controller
                     ]
                 );
             } else {
-                // Jika berubah ke pickup, hapus pengiriman
                 if ($pesanan->pengiriman) {
                     $pesanan->pengiriman->delete();
                 }
@@ -269,26 +256,19 @@ class PesananController extends Controller
             return 0;
         }
 
-        // Ambil koordinat tujuan
         $latTujuan = $data['results'][0]['geometry']['lat'];
         $lngTujuan = $data['results'][0]['geometry']['lng'];
 
-        // Lokasi toko (contoh: Ulak Karang Utara, Padang)
         $latToko = -0.913602;
         $lngToko = 100.352629;
 
-        // Hitung jarak dengan rumus Haversine
         $jarak = $this->hitungJarak($latToko, $lngToko, $latTujuan, $lngTujuan);
 
-        // Tentukan ongkir, misal Rp 2.000/km
         $ongkir = round($jarak * 2000);
 
         return $ongkir;
     }
 
-    /**
-     * Rumus Haversine (jarak dalam km)
-     */
     function hitungJarak($lat1, $lon1, $lat2, $lon2)
     {
         $radius = 6371; // radius bumi dalam kilometer

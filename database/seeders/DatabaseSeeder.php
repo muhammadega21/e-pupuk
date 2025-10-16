@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'NPK',
             'jenis' => 'Kimia',
             'berat' => 50,
-            'harga' => 250000,
+            'harga' => 100000,
             'stok' => 100,
             'slug' => 'npk',
         ]);
