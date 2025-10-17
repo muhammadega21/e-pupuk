@@ -7,13 +7,14 @@
         <h1>{{ $title }}</h1>
     </div>
 
-    <div class="mt-4">
+    <div class="mt-4 w-full">
         <div class="flex justify-end mb-3">
             <button data-modal-target="addPesanan" data-modal-toggle="addPesanan"
                 class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm">
                 + Tambah Pesanan
             </button>
         </div>
+
 
         <table id="pesananTable" data-dt-theme="light">
             <thead>
@@ -25,7 +26,8 @@
                     <th>Total Bayar</th>
                     <th>Metode</th>
                     <th>Channel</th>
-                    <th>Status</th>
+                    <th>Status Pembayaran</th>
+                    <th>Status Pengiriman</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -63,8 +65,9 @@
                             data: 'user_data.nama',
                             name: 'user_data.nama',
                             orderable: false,
-                            render: function(data) {
-                                return data ? data : 'Guest Pickup';
+                            render: function(data, type, row) {
+                                return data ? data : (row.pengiriman ? row.pengiriman.nama_penerima :
+                                    'Guest User');
                             }
                         },
                         {
@@ -88,6 +91,16 @@
                         {
                             data: 'payment_status',
                             name: 'payment_status',
+                            render: function(data) {
+                                return data ? data : '-';
+                            }
+                        },
+                        {
+                            data: 'fulfillment_status',
+                            name: 'fulfillment_status',
+                            render: function(data) {
+                                return data ? data : '-';
+                            }
                         },
                         {
                             data: 'action',

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('channel', ['online', 'store']);
             $table->enum('order_type', ['delivery', 'pickup']);
             $table->enum('payment_status', ['unpaid', 'pending', 'paid', 'failed', 'redunded']);
-            $table->enum('fulfillment_status', ['new', 'processing', 'shipped', 'delivered', 'canceled']);
+            $table->enum('fulfillment_status', ['new', 'processing', 'shipped', 'delivered', 'canceled'])->nullable();
             $table->integer('total_karung');
             $table->decimal('total_bayar', 15, 2);
             $table->timestamps();

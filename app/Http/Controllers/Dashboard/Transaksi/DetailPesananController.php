@@ -13,7 +13,7 @@ class DetailPesananController extends Controller
         $pesanan = Pesanan::with(['detailPesanan', 'pengiriman', 'pembayaran', 'user_data'])->findOrFail($id);
         return view('pages.dashboard.transaksi.detail-pesanan', [
             'title' => 'Detail Pesanan',
-            'pesanans' => $pesanan
+            'pesanan' => $pesanan
         ]);
     }
 }

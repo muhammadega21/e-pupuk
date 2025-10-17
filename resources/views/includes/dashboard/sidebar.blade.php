@@ -58,7 +58,7 @@
                 @endif
                 <li>
                     <a href="{{ route('dashboard.transaksi.pesanan') }}"
-                        class="{{ Route::is('dashboard.transaksi.pesanan') ? 'active' : '' }} flex items-center gap-x-3 px-4 py-2 rounded-md">
+                        class="{{ Route::is(['dashboard.transaksi.pesanan', 'dashboard.transaksi.detail-pesanan']) ? 'active' : '' }} flex items-center gap-x-3 px-4 py-2 rounded-md">
                         <i class="fa-solid fa-box"></i>
                         <span>Pesanan</span>
                     </a>

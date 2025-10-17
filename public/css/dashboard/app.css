@@ -28,3 +28,21 @@ select.error {
     font-size: 1.5rem;
     font-weight: 600;
 }
+
+.dt-container div:nth-child(2) {
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.dataTable {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* .dataTable {
+} */
+
+.dataTable th {
+    background-color: var(--color-primary);
+    color: #fff;
+}

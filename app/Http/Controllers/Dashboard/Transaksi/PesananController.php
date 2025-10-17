@@ -20,7 +20,7 @@ class PesananController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Pesanan::with(['user_data']);
+            $data = Pesanan::with(['user_data', 'pengiriman']);
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -76,6 +76,7 @@ class PesananController extends Controller
 
             // Simpan pesanan utama
             $payment_status = $validated['metode_pembayaran'] === 'cash' ? 'paid' : 'pending';
+            $fillfillment_status = $validated['order_type'] === 'delivery' ? 'new' : null;
             $pesanan = Pesanan::create([
                 'created_by' => Auth::user()->user_id,
                 'handled_by' => Auth::user()->user_id,
@@ -84,7 +85,7 @@ class PesananController extends Controller
                 'channel' => 'store',
                 'order_type' => $validated['order_type'],
                 'payment_status' => $payment_status,
-                'fulfillment_status' => 'new',
+                'fulfillment_status' => $fillfillment_status,
                 'total_karung' => array_sum($validated['total_karung']),
                 'total_bayar' => $validated['total_bayar'],
             ]);
