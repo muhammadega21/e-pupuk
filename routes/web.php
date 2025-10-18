@@ -82,6 +82,8 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(DetailPesananController::class)->group(function () {
             Route::get('/detail-pesanan/{id}', 'index')->name('dashboard.transaksi.detail-pesanan');
+            Route::put('/detail-pesanan/{id}/update-pembayaran', 'updatePembayaran')->name('dashboard.transaksi.detail-pesanan.update-pembayaran');
+            Route::put('/detail-pesanan/{id}/update-pengiriman', 'updatePengiriman')->name('dashboard.transaksi.detail-pesanan.update-pengiriman');
         });
     });
 });
