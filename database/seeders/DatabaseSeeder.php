@@ -70,35 +70,35 @@ class DatabaseSeeder extends Seeder
             'telepon' => '08123456789'
         ]);
 
-        Pupuk::create([
-            'nama' => 'Urea',
-            'jenis' => 'Kimia',
-            'berat' => 50,
-            'harga' => 250000,
-            'stok' => 110,
-            'slug' => 'urea',
-        ]);
+        // Pupuk::create([
+        //     'nama' => 'Urea',
+        //     'jenis' => 'Kimia',
+        //     'berat' => 50,
+        //     'harga' => 250000,
+        //     'stok' => 110,
+        //     'slug' => 'urea',
+        // ]);
 
-        Pupuk::create([
-            'nama' => 'NPK',
-            'jenis' => 'Kimia',
-            'berat' => 50,
-            'harga' => 100000,
-            'stok' => 100,
-            'slug' => 'npk',
-        ]);
+        // Pupuk::create([
+        //     'nama' => 'NPK',
+        //     'jenis' => 'Kimia',
+        //     'berat' => 50,
+        //     'harga' => 100000,
+        //     'stok' => 100,
+        //     'slug' => 'npk',
+        // ]);
 
-        Produksi::create([
-            'barang_id' => 1,
-            'tanggal_produksi' => date('Y-m-d'),
-            'jumlah_karung' => 10,
-            'note' => 'Produksi Urea'
-        ]);
+        // Produksi::create([
+        //     'barang_id' => 1,
+        //     'tanggal_produksi' => date('Y-m-d'),
+        //     'jumlah_karung' => 10,
+        //     'note' => 'Produksi Urea'
+        // ]);
 
-        Produksi::create([
-            'barang_id' => 2,
-            'tanggal_produksi' => date('Y-m-d'),
-            'jumlah_karung' => 10,
-        ]);
+        // Produksi::create([
+        //     'barang_id' => 2,
+        //     'tanggal_produksi' => date('Y-m-d'),
+        //     'jumlah_karung' => 10,
+        // ]);
     }
 }

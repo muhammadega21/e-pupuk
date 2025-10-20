@@ -25,6 +25,7 @@
                     <th>Stok</th>
                     <th>Harga</th>
                     <th>Status</th>
+                    <th>Gambar</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -51,35 +52,40 @@
                         },
                         {
                             data: 'nama',
-                            name: 'nama',
+                            name: 'nama'
                         },
                         {
                             data: 'jenis',
-                            name: 'jenis',
-                            orderable: false,
+                            name: 'jenis'
                         },
                         {
                             data: 'berat',
-                            name: 'berat',
+                            name: 'berat'
                         },
                         {
                             data: 'stok',
-                            name: 'stok',
+                            name: 'stok'
                         },
                         {
                             data: 'harga',
-                            name: 'harga',
+                            name: 'harga'
                         },
                         {
                             data: 'status',
-                            name: 'status',
+                            name: 'status'
+                        },
+                        {
+                            data: 'gambar',
+                            name: 'gambar',
+                            orderable: false,
+                            searchable: false
                         },
                         {
                             data: 'action',
                             name: 'action',
                             orderable: false,
-                            searchable: false,
-                        },
+                            searchable: false
+                        }
                     ]
                 })
             })
@@ -113,7 +119,7 @@
         </script>
 
         <x-modal id="addPupuk" title="Tambah Pupuk">
-            <form action="{{ route('dashboard.master-data.pupuk.store') }}" method="POST">
+            <form action="{{ route('dashboard.master-data.pupuk.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label class="block text-sm font-medium text-gray-700">Nama Pupuk</label>
@@ -128,7 +134,7 @@
                         required>
                 </div>
                 <div class="mb-3">
-                    <label class="block text-sm font-medium text-gray-700">Berat</label>
+                    <label class="block text-sm font-medium text-gray-700">Berat (kg)</label>
                     <input type="number" name="berat" id="berat"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required>
@@ -144,6 +150,11 @@
                     <input type="number" name="harga" id="harga"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Gambar</label>
+                    <input type="file" name="gambar" id="gambar"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1" accept="image/*" required>
                 </div>
                 <div class="mb-3">
                     <label class="block text-sm font-medium text-gray-700">Status</label>
@@ -164,7 +175,7 @@
         </x-modal>
 
         <x-modal id="editPupuk" title="Edit Pupuk">
-            <form id="editPupukForm" method="POST">
+            <form id="editPupukForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -182,7 +193,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="block text-sm font-medium text-gray-700">Berat</label>
+                    <label class="block text-sm font-medium text-gray-700">Berat (kg)</label>
                     <input type="number" name="berat" id="edit_pupuk_berat"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required>
@@ -200,6 +211,12 @@
                     <input type="number" name="harga" id="edit_pupuk_harga"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Gambar</label>
+                    <input type="file" name="gambar" id="edit_pupuk_gambar"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1" accept="image/*">
                 </div>
 
                 <div class="mb-3">

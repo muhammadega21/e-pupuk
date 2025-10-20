@@ -3,11 +3,14 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\HomeController as DashboardHomeController;
+use App\Http\Controllers\Dashboard\Laporan\PenjualanController as LaporanPenjualanController;
+use App\Http\Controllers\Dashboard\Laporan\ProduksiController as LaporanProduksiController;
 use App\Http\Controllers\Dashboard\MasterData\KaryawanController;
 use App\Http\Controllers\Dashboard\MasterData\PelangganController;
 use App\Http\Controllers\Dashboard\MasterData\ProduksiController;
 use App\Http\Controllers\Dashboard\MasterData\PupukController;
 use App\Http\Controllers\Dashboard\MasterData\RoleController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\Transaksi\DetailPesananController;
 use App\Http\Controllers\Dashboard\Transaksi\PesananController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
@@ -23,7 +26,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 // Frontend
-Route::get('/', [FrontendHomeController::class, 'index'])->name('frontend.home');
+Route::get('/', [FrontendHomeController::class, 'index'])->name('home');
 
 // Dashboard
 Route::middleware('auth')->group(function () {
@@ -80,10 +83,25 @@ Route::middleware('auth')->group(function () {
             Route::delete('/pesanan/{id}', 'destroy')->name('dashboard.transaksi.pesanan.destroy');
         });
 
+        // Detail Pesanan
         Route::controller(DetailPesananController::class)->group(function () {
             Route::get('/detail-pesanan/{id}', 'index')->name('dashboard.transaksi.detail-pesanan');
             Route::put('/detail-pesanan/{id}/update-pembayaran', 'updatePembayaran')->name('dashboard.transaksi.detail-pesanan.update-pembayaran');
             Route::put('/detail-pesanan/{id}/update-pengiriman', 'updatePengiriman')->name('dashboard.transaksi.detail-pesanan.update-pengiriman');
         });
+
+        // Laporan
+        Route::controller(LaporanPenjualanController::class)->group(function () {
+            Route::get('/laporan/penjualan', 'index')->name('dashboard.laporan.penjualan');
+        });
+
+        Route::controller(LaporanProduksiController::class)->group(function () {
+            Route::get('/laporan/produksi', 'index')->name('dashboard.laporan.produksi');
+        });
+
+        // Profile
+        Route::get('/profile', [ProfileController::class, 'index'])->name('dashboard.profile');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('dashboard.profile.update');
+        Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('dashboard.profile.password');
     });
 });
