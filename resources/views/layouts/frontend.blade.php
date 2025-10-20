@@ -18,7 +18,7 @@
 
 <body>
     @include('includes.frontend.navbar')
-    <main class="px-20 bg-white">
+    <main class="px-5 md:px-20 bg-white">
         {{ $slot }}
     </main>
 
