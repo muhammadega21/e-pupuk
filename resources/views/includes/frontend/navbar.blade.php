@@ -1,10 +1,10 @@
 <nav class="h-max md:h-20 w-full border-b border-gray-300 p-5 md:px-20 bg-white">
     <div class="flex gap-x-10 items-center justify-between h-full w-full">
-        <h1 class="text-nowrap font-bold text-2xl text-[var(--color-primary)]">Pupuk Sriwindo</h1>
+        <a href="{{ route('home') }}" class="text-nowrap font-bold text-2xl text-primary">Pupuk Sriwindo</a>
         <div class="search-box w-full md:w-1/2 hidden md:flex">
             <input type="text" placeholder="Cari Produk..."
                 class="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
-            <button class="ml-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-md">Cari</button>
+            <button class="ml-2 px-4 py-2 bg-primary text-white rounded-md cursor-pointer">Cari</button>
         </div>
         <div class="flex gap-x-5 items-center">
             @auth
@@ -28,7 +28,7 @@
                 </div>
             @endauth
             @guest
-                <a href="{{ route('login') }}" class="text-[var(--color-primary)]">LOGIN/REGISTER</a>
+                <a href="{{ route('login') }}" class="text-primary">LOGIN/REGISTER</a>
             @endguest
             <div class="cart-icon">
                 <i class="fa-solid fa-cart-shopping text-xl text-gray-600"></i>
@@ -38,6 +38,6 @@
     <div class="search-box w-full md:w-1/2 flex md:hidden mt-4">
         <input type="text" placeholder="Cari Produk..."
             class="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
-        <button class="ml-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-md">Cari</button>
+        <button class="ml-2 px-4 py-2 bg-primary text-white rounded-md cursor-pointer">Cari</button>
     </div>
 </nav>
