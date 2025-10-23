@@ -27,4 +27,11 @@ class HomeController extends Controller
             'pupukLainnya' => $pupukLainnya
         ]);
     }
+
+    public function cart()
+    {
+        return view('pages.frontend.cart', [
+            'title' => 'Keranjang Belanja',
+        ]);
+    }
 }

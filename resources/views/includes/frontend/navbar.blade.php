@@ -6,7 +6,12 @@
                 class="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
             <button class="ml-2 px-4 py-2 bg-primary text-white rounded-md cursor-pointer">Cari</button>
         </div>
-        <div class="flex gap-x-5 items-center">
+        <div class="flex gap-x-5 items-end">
+            <div class="cart-icon">
+                <a href="{{ route('cart') }}" class="relative">
+                    <i class="fa-solid fa-cart-shopping text-xl text-gray-600"></i>
+                </a>
+            </div>
             @auth
                 <div class="dropdown dropdown-center">
                     <div tabindex="0" role="button" class="">
@@ -30,9 +35,7 @@
             @guest
                 <a href="{{ route('login') }}" class="text-primary">LOGIN/REGISTER</a>
             @endguest
-            <div class="cart-icon">
-                <i class="fa-solid fa-cart-shopping text-xl text-gray-600"></i>
-            </div>
+
         </div>
     </div>
     <div class="search-box w-full md:w-1/2 flex md:hidden mt-4">

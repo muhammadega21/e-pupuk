@@ -28,6 +28,8 @@ Route::controller(AuthController::class)->group(function () {
 // Frontend
 Route::get('/', [FrontendHomeController::class, 'index'])->name('home');
 Route::get('/produk/{slug}', [FrontendHomeController::class, 'produkDetail'])->name('produk.detail');
+Route::get('/cart', [FrontendHomeController::class, 'cart'])->name('cart');
+Route::delete('/cart/{id}', [FrontendHomeController::class, 'cartDestroy'])->name('cart.destroy');
 
 // Dashboard
 Route::middleware('auth')->group(function () {
