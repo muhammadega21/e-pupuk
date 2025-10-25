@@ -34,4 +34,11 @@ class HomeController extends Controller
             'title' => 'Keranjang Belanja',
         ]);
     }
+
+    public function checkout()
+    {
+        return view('pages.frontend.checkout', [
+            'title' => 'Checkout',
+        ]);
+    }
 }

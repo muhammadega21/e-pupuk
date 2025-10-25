@@ -1,16 +1,3 @@
-label:has(+ input[required])::after,
-label:has(+ textarea[required])::after,
-label:has(+ select[required])::after {
-    content: " *";
-    color: red;
-}
-
-input.error,
-textarea.error,
-select.error {
-    border-color: rgb(247, 19, 19);
-}
-
 #sidebar {
     overflow-x: auto;
     scrollbar-width: thin;

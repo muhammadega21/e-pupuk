@@ -49,7 +49,7 @@
                     </tr>
                 </table>
             </div>
-            <button class="btn btn-primary mt-5 w-full">Checkout</button>
+            <a href="{{ route('checkout') }}" class="btn btn-primary mt-5 w-full">Checkout</a>
         </div>
     </div>
 </x-frontend-layout>
