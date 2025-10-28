@@ -13,6 +13,7 @@ class DetailPesanan extends Model
     {
         return $this->belongsTo(Pesanan::class, 'pesanan_id');
     }
+    
     public function barang()
     {
         return $this->belongsTo(Pupuk::class, 'pupuk_id');

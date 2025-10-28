@@ -50,19 +50,21 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
     public function user_data()
     {
         return $this->hasOne(UserData::class, 'user_id', 'user_id');
     }
+
     public function createdOrders()
     {
         return $this->hasMany(Pesanan::class, 'created_by');
     }
+
     public function handledOrders()
     {
         return $this->hasMany(Pesanan::class, 'handled_by');
     }
-
 
     public function hasRole($roles)
     {

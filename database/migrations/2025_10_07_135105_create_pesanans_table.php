@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('order_no')->unique();
             $table->enum('channel', ['online', 'store', 'cart']);
             $table->enum('order_type', ['delivery', 'pickup']);
-            $table->enum('payment_status', ['unpaid', 'pending', 'paid', 'failed', 'redunded']);
+            $table->enum('payment_status', ['unpaid', 'pending', 'paid', 'failed', 'refunded']);
             $table->enum('fulfillment_status', ['new', 'processing', 'shipped', 'delivered', 'canceled'])->nullable();
             $table->integer('total_karung');
             $table->decimal('total_bayar', 15, 2);
