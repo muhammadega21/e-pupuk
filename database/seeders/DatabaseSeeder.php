@@ -70,35 +70,38 @@ class DatabaseSeeder extends Seeder
             'telepon' => '08123456789'
         ]);
 
-        // Pupuk::create([
-        //     'nama' => 'Urea',
-        //     'jenis' => 'Kimia',
-        //     'berat' => 50,
-        //     'harga' => 250000,
-        //     'stok' => 110,
-        //     'slug' => 'urea',
-        // ]);
+        Pupuk::create([
+            'nama' => 'Pupuk Organik Serbuk',
+            'jenis' => 'Organik',
+            'berat' => 50,
+            'harga' => 65000,
+            'stok' => 100,
+            'gambar' => 'serbuk.jpg',
+            'slug' => 'pupuk-organik-serbuk',
+        ]);
 
-        // Pupuk::create([
-        //     'nama' => 'NPK',
-        //     'jenis' => 'Kimia',
-        //     'berat' => 50,
-        //     'harga' => 100000,
-        //     'stok' => 100,
-        //     'slug' => 'npk',
-        // ]);
+        Pupuk::create([
+            'nama' => 'Pupuk Organik Granul',
+            'jenis' => 'Organik',
+            'berat' => 50,
+            'harga' => 75000,
+            'stok' => 100,
+            'gambar' => 'granul.jpg',
+            'slug' => 'pupuk-organik-granul',
+        ]);
 
         // Produksi::create([
         //     'barang_id' => 1,
         //     'tanggal_produksi' => date('Y-m-d'),
         //     'jumlah_karung' => 10,
-        //     'note' => 'Produksi Urea'
+        //     'note' => 'Pupuk Organik Serbuk'
         // ]);
 
         // Produksi::create([
         //     'barang_id' => 2,
         //     'tanggal_produksi' => date('Y-m-d'),
         //     'jumlah_karung' => 10,
+        //     'note' => 'Pupuk Organik Granul'
         // ]);
     }
 }
