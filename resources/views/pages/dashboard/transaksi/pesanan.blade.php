@@ -8,12 +8,14 @@
     </div>
 
     <div class="mt-4 w-full">
-        <div class="flex justify-end mb-3">
-            <button data-modal-target="addPesanan" data-modal-toggle="addPesanan"
-                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm">
-                + Tambah Pesanan
-            </button>
-        </div>
+        @if (Auth::user()->hasRole(['admin', 'karyawan']))
+            <div class="flex justify-end mb-3">
+                <button data-modal-target="addPesanan" data-modal-toggle="addPesanan"
+                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm">
+                    + Tambah Pesanan
+                </button>
+            </div>
+        @endif
 
 
         <table id="pesananTable" data-dt-theme="light">
@@ -112,15 +114,40 @@
                 })
             })
 
-            function clonePupukItem(containerSelector) {
-                let newItem = $(`${containerSelector} .pupuk-item:first`).clone();
-                newItem.find('input').val('');
-                newItem.find('select').prop('selectedIndex', 0);
-                $(containerSelector).append(newItem);
-            }
+            $(document).on('submit', '.confirm-delivery', function(e) {
+                e.preventDefault();
+
+                const form = this;
+
+                Swal.fire({
+                    title: "Konfirmasi Pengiriman?",
+                    text: "Anda yakin telah menerima pesanan ini?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, lanjutkan!",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         </script>
-        <x-pesanan.modal-add order_no="{{ $order_no }}" :barangs="$barangs" />
-        <x-pesanan.modal-edit order_no="{{ $order_no }}" :barangs="$barangs" />
+
+        @if (Auth::user()->hasRole(['admin', 'pelanggan']))
+            <script>
+                function clonePupukItem(containerSelector) {
+                    let newItem = $(`${containerSelector} .pupuk-item:first`).clone();
+                    newItem.find('input').val('');
+                    newItem.find('select').prop('selectedIndex', 0);
+                    $(containerSelector).append(newItem);
+                }
+            </script>
+            <x-pesanan.modal-add order_no="{{ $order_no }}" :barangs="$barangs" />
+            <x-pesanan.modal-edit order_no="{{ $order_no }}" :barangs="$barangs" />
+        @endif
         <x-alert />
     @endpush
 </x-dashboard-layout>

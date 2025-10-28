@@ -138,14 +138,16 @@
             </table>
         </div>
         <div class="flex gap-x-3 justify-end mt-4">
-            @if ($pesanan->pengiriman)
-                <button data-modal-target="updatePengiriman" data-modal-toggle="updatePengiriman"
-                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm">Update
-                    Pengiriman</button>
+            @if (Auth::user()->hasRole(['admin', 'karyawan']))
+                @if ($pesanan->pengiriman)
+                    <button data-modal-target="updatePengiriman" data-modal-toggle="updatePengiriman"
+                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm">Update
+                        Pengiriman</button>
+                @endif
+                <button data-modal-target="updatePembayaran" data-modal-toggle="updatePembayaran"
+                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm">Update
+                    Pembayaran</button>
             @endif
-            <button data-modal-target="updatePembayaran" data-modal-toggle="updatePembayaran"
-                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm">Update
-                Pembayaran</button>
             <a href="{{ route('dashboard.transaksi.pesanan') }}"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm">Kembali</a>
         </div>

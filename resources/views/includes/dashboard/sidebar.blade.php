@@ -63,23 +63,6 @@
                         <span>Pesanan</span>
                     </a>
                 </li>
-                @if (Auth::user()->hasRole(['admin', 'karyawan']))
-                    <li class="px-4 mt-4 text-gray-500 uppercase text-xs font-semibold">Laporan</li>
-                    <li>
-                        <a href="{{ route('dashboard.laporan.penjualan') }}"
-                            class="{{ Route::is('dashboard.laporan.penjualan') ? 'active' : '' }} flex items-center gap-x-3 px-4 py-2 rounded-md">
-                            <i class="fa-solid fa-file-invoice-dollar"></i>
-                            <span>Penjualan</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('dashboard.laporan.produksi') }}"
-                            class="{{ Route::is('dashboard.laporan.produksi') ? 'active' : '' }} flex items-center gap-x-3 px-4 py-2 rounded-md">
-                            <i class="fa-solid fa-chart-line"></i>
-                            <span>Produksi</span>
-                        </a>
-                    </li>
-                @endif
                 <li class="px-4 mt-4 text-gray-500 uppercase text-xs font-semibold">Pengaturan</li>
                 <li>
                     <a href="{{ route('dashboard.profile') }}"

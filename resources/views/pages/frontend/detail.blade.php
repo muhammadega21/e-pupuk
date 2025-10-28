@@ -17,9 +17,9 @@
                 <div>
                     <p class="mb-2 font-semibold"><i class="fa-solid fa-check text-primary"></i> Stok
                         {{ $pupuk->stok }}</p>
-                    <form action="" method="POST" class="flex items-center gap-3 mt-3">
+                    <form action="{{ route('cart.store') }}" method="POST" class="flex items-center gap-3 mt-3">
                         @csrf
-                        <input type="hidden" name="produk_id" value="{{ $pupuk->id }}">
+                        <input type="hidden" name="produk_id" value="{{ $pupuk->barang_id }}">
 
                         <!-- Input Qty -->
                         <div class="flex items-center border border-gray-300 rounded-md overflow-hidden">

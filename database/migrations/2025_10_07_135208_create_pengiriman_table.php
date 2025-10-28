@@ -15,11 +15,11 @@ return new class extends Migration
         Schema::create('pengiriman', function (Blueprint $table) {
             $table->id('pengiriman_id');
             $table->foreignIdFor(Pesanan::class, 'pesanan_id')->constrained()->onDelete('cascade');
-            $table->string('nama_penerima');
-            $table->string('telepon');
-            $table->string('alamat');
-            $table->decimal('ongkir');
-            $table->date('tgl_kirim');
+            $table->string('nama_penerima')->nullable();
+            $table->string('telepon')->nullable();
+            $table->string('alamat')->nullable();
+            $table->decimal('ongkir')->nullable();
+            $table->date('tgl_kirim')->nullable();
             $table->date('tgl_terima')->nullable();
             $table->enum('status', ['pending', 'shipped', 'delivered']);
             $table->timestamps();

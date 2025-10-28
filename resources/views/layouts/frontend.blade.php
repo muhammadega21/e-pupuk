@@ -19,6 +19,26 @@
 <body>
     @include('includes.frontend.navbar')
     <main class="px-5 md:px-20 bg-white">
+        @if (session()->has('success'))
+            <script>
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showCloseButton: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "{{ session('success') }}"
+                });
+            </script>
+        @endif
         {{ $slot }}
     </main>
 

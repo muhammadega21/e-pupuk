@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Pupuk;
+use App\Models\Pesanan;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\DetailPesanan;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -25,20 +30,6 @@ class HomeController extends Controller
             'title' => $pupuk->nama . ' (' . $pupuk->berat . ' Kg)',
             'pupuk' => $pupuk,
             'pupukLainnya' => $pupukLainnya
-        ]);
-    }
-
-    public function cart()
-    {
-        return view('pages.frontend.cart', [
-            'title' => 'Keranjang Belanja',
-        ]);
-    }
-
-    public function checkout()
-    {
-        return view('pages.frontend.checkout', [
-            'title' => 'Checkout',
         ]);
     }
 }

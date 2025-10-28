@@ -20,11 +20,24 @@ class PesananController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Pesanan::with(['user_data', 'pengiriman'])->latest();
+            if (Auth::user()->hasRole('pelanggan')) {
+                $data = Pesanan::where('handled_by', Auth::id())->with(['user_data', 'pengiriman'])->latest();
+            } else {
+                $data = Pesanan::with(['user_data', 'pengiriman'])->latest();
+            }
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
+                    if ($row->fulfillment_status == 'delivered') {
+                        $deliveryConfirmBtn = '<span class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded-md text-sm mr-2">Sudah Diterima</span>';
+                    } else {
+                        $deliveryConfirmBtn = '
+                            <form action="' . route('dashboard.transaksi.pesanan.confirm-delivery', $row->pesanan_id) . '" method="POST" class="confirm-delivery inline-block mr-2">
+                                ' . csrf_field() . '
+                                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm">Konfirmasi Terima</button>
+                            </form>';
+                    }
                     $editBtn = '<button data-id="' . $row->pesanan_id . '" class="edit-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm mr-2">Edit</button>';
                     $detailBtn = '<a href="' . route('dashboard.transaksi.detail-pesanan', $row->pesanan_id) . '" class="detail-btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm">Detail</a>';
                     $deleteForm = '
@@ -33,8 +46,11 @@ class PesananController extends Controller
                             ' . method_field('DELETE') . '
                             <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm">Hapus</button>
                         </form>';
-
-                    return $editBtn . $detailBtn . $deleteForm;
+                    if (Auth::user()->hasRole('pelanggan')) {
+                        return $deliveryConfirmBtn . $detailBtn;
+                    } else {
+                        return $deliveryConfirmBtn . $editBtn . $detailBtn . $deleteForm;
+                    }
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -241,6 +257,28 @@ class PesananController extends Controller
             ->with('success', 'Pesanan berhasil dihapus.');
     }
 
+    public function confirmDelivery($id)
+    {
+        $pesanan = Pesanan::findOrFail($id);
+        if ($pesanan->fulfillment_status === 'delivered') {
+            return redirect()->route('dashboard.transaksi.pesanan')
+                ->with('success', 'Pesanan sudah dikonfirmasi diterima.');
+        }
+
+        $pesanan->update([
+            'fulfillment_status' => 'delivered',
+        ]);
+
+        if ($pesanan->pengiriman) {
+            $pesanan->pengiriman->update([
+                'status' => 'delivered',
+            ]);
+        }
+
+        return redirect()->route('dashboard.transaksi.pesanan')
+            ->with('success', 'Pesanan berhasil dikonfirmasi diterima.');
+    }
+
     private function hitungOngkir($alamat)
     {
         $apiKey = env('OPENCAGE_API_KEY');
@@ -254,7 +292,7 @@ class PesananController extends Controller
         $data = $response->json();
 
         if (empty($data['results'])) {
-            return 0;
+            return 2000;
         }
 
         $latTujuan = $data['results'][0]['geometry']['lat'];

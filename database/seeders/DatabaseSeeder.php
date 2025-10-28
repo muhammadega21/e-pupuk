@@ -2,13 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Produksi;
-use App\Models\Pupuk;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Pupuk;
+use App\Models\Produksi;
 use App\Models\UserData;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -70,35 +72,41 @@ class DatabaseSeeder extends Seeder
             'telepon' => '08123456789'
         ]);
 
-        // Pupuk::create([
-        //     'nama' => 'Urea',
-        //     'jenis' => 'Kimia',
-        //     'berat' => 50,
-        //     'harga' => 250000,
-        //     'stok' => 110,
-        //     'slug' => 'urea',
-        // ]);
+        $dataPupuk = [
+            [
+                'nama' => 'Pupuk Organik Serbuk',
+                'jenis' => 'Organik',
+                'berat' => 50,
+                'stok' => 100,
+                'harga' => 65000,
+                'gambar' => 'pupuk_organik_serbuk.jpg',
+            ],
+            [
+                'nama' => 'Pupuk Organik Granul',
+                'jenis' => 'Organik',
+                'berat' => 50,
+                'stok' => 80,
+                'harga' => 75000,
+                'gambar' => 'pupuk_organik_granul.jpg',
+            ],
+        ];
 
-        // Pupuk::create([
-        //     'nama' => 'NPK',
-        //     'jenis' => 'Kimia',
-        //     'berat' => 50,
-        //     'harga' => 100000,
-        //     'stok' => 100,
-        //     'slug' => 'npk',
-        // ]);
+        foreach ($dataPupuk as $pupuk) {
+            $sourcePath = database_path('seeders/images/' . $pupuk['gambar']);
 
-        // Produksi::create([
-        //     'barang_id' => 1,
-        //     'tanggal_produksi' => date('Y-m-d'),
-        //     'jumlah_karung' => 10,
-        //     'note' => 'Produksi Urea'
-        // ]);
+            if (file_exists($sourcePath)) {
+                Storage::disk('public')->put('pupuk/' . $pupuk['gambar'], file_get_contents($sourcePath));
+            }
 
-        // Produksi::create([
-        //     'barang_id' => 2,
-        //     'tanggal_produksi' => date('Y-m-d'),
-        //     'jumlah_karung' => 10,
-        // ]);
+            Pupuk::create([
+                'nama' => $pupuk['nama'],
+                'slug' => Str::slug($pupuk['nama']),
+                'jenis' => $pupuk['jenis'],
+                'berat' => $pupuk['berat'],
+                'stok' => $pupuk['stok'],
+                'harga' => $pupuk['harga'],
+                'gambar' => 'pupuk/' . $pupuk['gambar'],
+            ]);
+        }
     }
 }

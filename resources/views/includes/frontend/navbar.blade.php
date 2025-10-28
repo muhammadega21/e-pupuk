@@ -7,12 +7,25 @@
             <button class="ml-2 px-4 py-2 bg-primary text-white rounded-md cursor-pointer">Cari</button>
         </div>
         <div class="flex gap-x-5 items-end">
-            <div class="cart-icon">
-                <a href="{{ route('cart') }}" class="relative">
-                    <i class="fa-solid fa-cart-shopping text-xl text-gray-600"></i>
-                </a>
-            </div>
             @auth
+                @php
+                    $cart_count =
+                        \App\Models\Pesanan::where('created_by', Auth::user()->user_id)
+                            ->where('channel', 'cart')
+                            ->first()
+                            ?->detailPesanan?->count() ?? 0;
+                @endphp
+                <div class="cart-icon">
+                    <a href="{{ route('cart') }}" class="relative">
+                        @if ($cart_count > 0)
+                            <span
+                                class="absolute -top-3 -right-2 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                {{ $cart_count }}
+                            </span>
+                        @endif
+                        <i class="fa-solid fa-cart-shopping text-xl text-gray-600"></i>
+                    </a>
+                </div>
                 <div class="dropdown dropdown-center">
                     <div tabindex="0" role="button" class="">
                         <div class="avatar cursor-pointer">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,10 +21,14 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $request->validate([
+            'email' => 'required|email|unique:user,email,' . Auth::user()->user_id . ',user_id',
             'nama' => 'required|string|max:100',
             'telepon' => 'nullable|string|max:15',
             'alamat' => 'nullable|string|max:255',
         ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
             'nama.required' => 'Nama wajib diisi.',
             'nama.max' => 'Nama maksimal 100 karakter.',
             'telepon.max' => 'Telepon maksimal 15 karakter.',
@@ -31,6 +36,8 @@ class ProfileController extends Controller
         ]);
 
         $user = Auth::user();
+        $user->email = $request->email;
+        $user->save();
         $user->user_data->update([
             'nama' => $request->nama,
             'telepon' => $request->telepon,

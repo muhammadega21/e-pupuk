@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'handled_by')->nullable()->constrained()->nullOnDelete();
             $table->date('tanggal_transaksi');
             $table->string('order_no')->unique();
-            $table->enum('channel', ['online', 'store']);
+            $table->enum('channel', ['online', 'store', 'cart']);
             $table->enum('order_type', ['delivery', 'pickup']);
             $table->enum('payment_status', ['unpaid', 'pending', 'paid', 'failed', 'redunded']);
             $table->enum('fulfillment_status', ['new', 'processing', 'shipped', 'delivered', 'canceled'])->nullable();
