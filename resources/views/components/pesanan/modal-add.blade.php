@@ -29,11 +29,11 @@
                 <div class="grid grid-cols-3 gap-3">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Pupuk</label>
-                        <select name="barang_id[]"
-                            class="barang_id w-full border border-gray-300 rounded-md px-3 py-2 mt-1" required>
+                        <select name="pupuk_id[]"
+                            class="pupuk_id w-full border border-gray-300 rounded-md px-3 py-2 mt-1" required>
                             <option value="">Pilih Pupuk</option>
                             @foreach ($barangs as $barang)
-                                <option value="{{ $barang->barang_id }}" data-harga="{{ $barang->harga }}">
+                                <option value="{{ $barang->pupuk_id }}" data-harga="{{ $barang->harga }}">
                                     {{ $barang->nama }}</option>
                             @endforeach
                         </select>
@@ -128,9 +128,9 @@
         $('#addPupuk').click(() => clonePupukItem('#pupukContainer'));
 
         // Hitung subtotal dan total
-        $(document).on('change keyup', '.barang_id, .total_karung', function() {
+        $(document).on('change keyup', '.pupuk_id, .total_karung', function() {
             let item = $(this).closest('.pupuk-item');
-            let harga = $('option:selected', item.find('.barang_id')).data('harga') || 0;
+            let harga = $('option:selected', item.find('.pupuk_id')).data('harga') || 0;
             let qty = parseInt(item.find('.total_karung').val()) || 0;
             let subtotal = harga * qty;
             item.find('.subtotal').val(subtotal.toFixed(2));

@@ -1,10 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\Dashboard\HomeController as DashboardHomeController;
-use App\Http\Controllers\Dashboard\Laporan\PenjualanController as LaporanPenjualanController;
-use App\Http\Controllers\Dashboard\Laporan\ProduksiController as LaporanProduksiController;
 use App\Http\Controllers\Dashboard\MasterData\KaryawanController;
 use App\Http\Controllers\Dashboard\MasterData\PelangganController;
 use App\Http\Controllers\Dashboard\MasterData\ProduksiController;
