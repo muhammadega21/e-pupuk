@@ -32,8 +32,17 @@ class CheckoutController extends Controller
     public function checkoutStore(Request $request)
     {
         $request->validate([
+            'nama' => 'required|string|max:100',
+            'alamat' => 'required|string|max:255',
+            'telepon' => 'required|string|max:15',
             'bukti_url' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ], [
+            'nama.required' => 'Nama wajib diisi.',
+            'nama.max' => 'Nama maksimal 100 karakter.',
+            'alamat.required' => 'Alamat wajib diisi.',
+            'alamat.max' => 'Alamat maksimal 255 karakter.',
+            'telepon.required' => 'Telepon wajib diisi.',
+            'telepon.max' => 'Telepon maksimal 15 karakter.',
             'bukti_url.required' => 'Bukti pembayaran wajib diunggah.',
             'bukti_url.image' => 'Bukti pembayaran harus berupa gambar.',
             'bukti_url.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
@@ -47,11 +56,7 @@ class CheckoutController extends Controller
             ->with(['detailPesanan', 'pengiriman', 'pembayaran'])
             ->first();
 
-        if (!$cart) {
-            return back()->with('error', 'Keranjang tidak ditemukan.');
-        }
-
-        if ($cart->detailPesanan->isEmpty()) {
+        if (!$cart || $cart->detailPesanan->isEmpty()) {
             return back()->with('error', 'Keranjang masih kosong.');
         }
 

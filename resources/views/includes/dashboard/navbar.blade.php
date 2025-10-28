@@ -8,11 +8,8 @@
             <i class="fa-solid fa-user text-sm"></i>
             <span>{{ Auth::user()->nama }} ({{ Auth::user()->role->role_name }})</span>
         </div>
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button
-                class="flex items-center px-2 py-1.5 border rounded border-red-400 text-red-400 text-xs hover:bg-red-600 hover:text-white cursor-pointer"><i
-                    class="fa-solid fa-arrow-right-from-bracket"></i>Logout</button>
-        </form>
+        <a href="{{ route('home') }}"
+            class="flex items-center px-2 py-1.5 border rounded border-blue-400 text-blue-400 text-xs hover:bg-blue-600 hover:text-white cursor-pointer"><i
+                class="fa-solid fa-arrow-left"></i>Kembali</a>
     </div>
 </nav>

@@ -1,5 +1,5 @@
 <x-frontend-layout :title="$title">
-    @if ($errors->any())
+    @if ($errors->any() || session()->has('error'))
         @push('scripts')
             <script>
                 const errors = `{!! '<ul>' . collect($errors->all())->map(fn($e) => "<li>{$e}</li>")->implode('') . '</ul>' !!}`;
