@@ -263,8 +263,7 @@
                         <label class="block text-sm font-medium text-gray-700">Tanggal Terima</label>
                         <input type="date" name="tgl_terima" id="tgl_terima"
                             class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
-                            value="{{ $pesanan->pengiriman->tgl_terima ? \Carbon\Carbon::parse($pesanan->pengiriman->tgl_terima)->format('Y-m-d') : '' }}"
-                            required>
+                            value="{{ $pesanan->pengiriman->tgl_terima ? \Carbon\Carbon::parse($pesanan->pengiriman->tgl_terima)->format('Y-m-d') : '' }}">
                     </div>
                 </div>
 

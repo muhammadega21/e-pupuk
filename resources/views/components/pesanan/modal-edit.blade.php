@@ -134,7 +134,7 @@
             data.detail_pesanan.forEach((item, index) => {
                 let options = `
             @foreach ($barangs as $barang)
-                <option value="{{ $barang->barang_id }}" data-harga="{{ $barang->harga }}">
+                <option value="{{ $barang->pupuk_id }}" data-harga="{{ $barang->harga }}">
                     {{ $barang->nama }}
                 </option>
             @endforeach
@@ -145,7 +145,7 @@
             <div class="grid grid-cols-3 gap-3">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Pupuk</label>
-                    <select name="barang_id[]" class="edit_barang_id w-full border border-gray-300 rounded-md px-3 py-2 mt-1" required>
+                    <select name="pupuk_id[]" class="edit_pupuk_id w-full border border-gray-300 rounded-md px-3 py-2 mt-1" required>
                         ${options}
                     </select>
                 </div>
@@ -169,8 +169,8 @@
 
 
             data.detail_pesanan.forEach((item, index) => {
-                $('#editPupukContainer .pupuk-item').eq(index).find('.edit_barang_id').val(item
-                    .barang_id);
+                $('#editPupukContainer .pupuk-item').eq(index).find('.edit_pupuk_id').val(item
+                    .pupuk_id);
             });
 
 
@@ -182,9 +182,9 @@
     });
 
     // event perhitungan ulang subtotal dan total
-    $(document).on('change keyup', '.edit_barang_id, .edit_total_karung', function() {
+    $(document).on('change keyup', '.edit_pupuk_id, .edit_total_karung', function() {
         let item = $(this).closest('.pupuk-item');
-        let harga = $('option:selected', item.find('.edit_barang_id')).data('harga') || 0;
+        let harga = $('option:selected', item.find('.edit_pupuk_id')).data('harga') || 0;
         let qty = parseInt(item.find('.edit_total_karung').val()) || 0;
         let subtotal = harga * qty;
         item.find('.edit_subtotal').val(subtotal.toFixed(2));

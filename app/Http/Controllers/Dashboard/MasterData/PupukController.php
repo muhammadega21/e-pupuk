@@ -26,9 +26,9 @@ class PupukController extends Controller
                     }
                 })
                 ->addColumn('action', function ($row) {
-                    $editBtn = '<button data-id="' . $row->barang_id . '" class="edit-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm mr-2">Edit</button>';
+                    $editBtn = '<button data-id="' . $row->pupuk_id . '" class="edit-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm mr-2">Edit</button>';
                     $deleteForm = '
-                        <form action="' . route('dashboard.master-data.pupuk.destroy', $row->barang_id) . '" method="POST" class="delete-form inline">
+                        <form action="' . route('dashboard.master-data.pupuk.destroy', $row->pupuk_id) . '" method="POST" class="delete-form inline">
                             ' . csrf_field() . method_field('DELETE') . '
                             <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm">Hapus</button>
                         </form>';

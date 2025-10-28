@@ -30,7 +30,7 @@
                     <div class="flex items-center border border-gray-300 rounded-md overflow-hidden">
                         <form action="{{ route('cart.updateQty') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="produk_id" value="{{ $item->barang_id }}">
+                            <input type="hidden" name="produk_id" value="{{ $item->pupuk_id }}">
                             <input type="hidden" name="action" value="decrease">
                             <button type="submit"
                                 class="px-3 py-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer">
@@ -42,7 +42,7 @@
                             required>
                         <form action="{{ route('cart.updateQty') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="produk_id" value="{{ $item->barang_id }}">
+                            <input type="hidden" name="produk_id" value="{{ $item->pupuk_id }}">
                             <input type="hidden" name="action" value="increase">
                             <button type="submit"
                                 class="px-3 py-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer">
@@ -50,7 +50,7 @@
                             </button>
                         </form>
                     </div>
-                    <form action="{{ route('cart.destroy', [$item->pesanan_id, $item->barang_id]) }}" method="POST"
+                    <form action="{{ route('cart.destroy', [$item->pesanan_id, $item->pupuk_id]) }}" method="POST"
                         class="delete-form">
                         @method('delete')
                         @csrf

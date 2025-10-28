@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function produkDetail($slug)
     {
         $pupuk = Pupuk::where('slug', $slug)->firstOrFail();
-        $pupukLainnya = Pupuk::where('barang_id', '!=', $pupuk->barang_id)->inRandomOrder()->take(4)->get();
+        $pupukLainnya = Pupuk::where('pupuk_id', '!=', $pupuk->pupuk_id)->inRandomOrder()->take(4)->get();
 
         return view('pages.frontend.detail', [
             'title' => $pupuk->nama . ' (' . $pupuk->berat . ' Kg)',

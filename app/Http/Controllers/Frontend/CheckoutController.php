@@ -101,7 +101,7 @@ class CheckoutController extends Controller
             }
 
             foreach ($cart->detailPesanan as $detail) {
-                Pupuk::where('barang_id', $detail->barang_id)
+                Pupuk::where('pupuk_id', $detail->pupuk_id)
                     ->decrement('stok', $detail->qty_karung);
             }
         });

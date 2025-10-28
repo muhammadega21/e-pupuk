@@ -56,7 +56,7 @@ class PesananController extends Controller
                 ->make(true);
         }
 
-        $barangs = Pupuk::select(['barang_id', 'nama', 'harga'])->get();
+        $barangs = Pupuk::select(['pupuk_id', 'nama', 'harga'])->get();
         $order_no = 'ORD-' . str_pad(random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
 
         return view('pages.dashboard.transaksi.pesanan', [
@@ -71,8 +71,8 @@ class PesananController extends Controller
         $validated = $request->validate([
             'order_no' => 'required|string',
             'order_type' => 'required|in:pickup,delivery',
-            'barang_id' => 'required|array|min:1',
-            'barang_id.*' => 'exists:pupuk,barang_id',
+            'pupuk_id' => 'required|array|min:1',
+            'pupuk_id.*' => 'exists:pupuk,pupuk_id',
             'total_karung' => 'required|array|min:1',
             'total_karung.*' => 'numeric|min:1',
             'total_bayar' => 'required|numeric|min:0',
@@ -106,14 +106,14 @@ class PesananController extends Controller
                 'total_bayar' => $validated['total_bayar'],
             ]);
 
-            foreach ($validated['barang_id'] as $i => $barangId) {
+            foreach ($validated['pupuk_id'] as $i => $barangId) {
                 $barang = Pupuk::find($barangId);
                 $qty = $validated['total_karung'][$i];
                 $subtotal = $barang->harga * $qty;
 
                 DetailPesanan::create([
                     'pesanan_id' => $pesanan->pesanan_id,
-                    'barang_id' => $barangId,
+                    'pupuk_id' => $barangId,
                     'qty_karung' => $qty,
                     'subtotal' => $subtotal,
                 ]);
@@ -143,8 +143,8 @@ class PesananController extends Controller
                 'status' => $status,
             ]);
 
-            foreach ($validated['barang_id'] as $i => $barangId) {
-                Pupuk::where('barang_id', $barangId)->decrement('stok', $validated['total_karung'][$i]);
+            foreach ($validated['pupuk_id'] as $i => $barangId) {
+                Pupuk::where('pupuk_id', $barangId)->decrement('stok', $validated['total_karung'][$i]);
             }
         });
 
@@ -165,8 +165,8 @@ class PesananController extends Controller
 
         $validated = $request->validate([
             'order_type' => 'required|in:pickup,delivery',
-            'barang_id' => 'required|array|min:1',
-            'barang_id.*' => 'exists:pupuk,barang_id',
+            'pupuk_id' => 'required|array|min:1',
+            'pupuk_id.*' => 'exists:pupuk,pupuk_id',
             'total_karung' => 'required|array|min:1',
             'total_karung.*' => 'numeric|min:1',
             'total_bayar' => 'required|numeric|min:0',
@@ -193,23 +193,23 @@ class PesananController extends Controller
             ]);
 
             foreach ($pesanan->detailPesanan as $detail) {
-                Pupuk::where('barang_id', $detail->barang_id)->increment('stok', $detail->qty_karung);
+                Pupuk::where('pupuk_id', $detail->pupuk_id)->increment('stok', $detail->qty_karung);
                 $detail->delete();
             }
 
-            foreach ($validated['barang_id'] as $i => $barangId) {
+            foreach ($validated['pupuk_id'] as $i => $barangId) {
                 $barang = Pupuk::find($barangId);
                 $qty = $validated['total_karung'][$i];
                 $subtotal = $barang->harga * $qty;
 
                 DetailPesanan::create([
                     'pesanan_id' => $pesanan->pesanan_id,
-                    'barang_id' => $barangId,
+                    'pupuk_id' => $barangId,
                     'qty_karung' => $qty,
                     'subtotal' => $subtotal,
                 ]);
 
-                Pupuk::where('barang_id', $barangId)->decrement('stok', $qty);
+                Pupuk::where('pupuk_id', $barangId)->decrement('stok', $qty);
             }
 
             if ($validated['order_type'] === 'delivery') {
@@ -272,6 +272,7 @@ class PesananController extends Controller
         if ($pesanan->pengiriman) {
             $pesanan->pengiriman->update([
                 'status' => 'delivered',
+                'tgl_terima' => now(),
             ]);
         }
 

@@ -8,9 +8,9 @@ class Produksi extends Model
 {
     protected $table = 'produksi';
     protected $primaryKey = 'produksi_id';
-    protected $fillable = ['barang_id', 'tanggal_produksi', 'jumlah_karung', 'note'];
+    protected $fillable = ['pupuk_id', 'tanggal_produksi', 'jumlah_karung', 'note'];
     public function barang()
     {
-        return $this->belongsTo(Pupuk::class, 'barang_id');
+        return $this->belongsTo(Pupuk::class, 'pupuk_id');
     }
 }

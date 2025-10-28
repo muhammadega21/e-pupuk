@@ -33,7 +33,7 @@ class ProduksiController extends Controller
                 ->make(true);
         }
 
-        $barangs = Pupuk::select(['barang_id', 'nama'])->get();
+        $barangs = Pupuk::select(['pupuk_id', 'nama'])->get();
         return view('pages.dashboard.master-data.produksi', [
             'title' => 'Data Produksi',
             'barangs' => $barangs
@@ -43,23 +43,23 @@ class ProduksiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'barang_id' => 'required',
+            'pupuk_id' => 'required',
             'tanggal_produksi' => 'required',
             'jumlah_karung' => 'required',
         ], [
-            'barang_id.required' => 'Barang harus diisi',
+            'pupuk_id.required' => 'Barang harus diisi',
             'tanggal_produksi.required' => 'Tanggal Produksi harus diisi',
             'jumlah_karung.required' => 'Jumlah Karung harus diisi',
         ]);
 
         Produksi::create([
-            'barang_id' => $request->barang_id,
+            'pupuk_id' => $request->pupuk_id,
             'tanggal_produksi' => $request->tanggal_produksi,
             'jumlah_karung' => $request->jumlah_karung,
             'note' => $request->note
         ]);
 
-        Pupuk::where('barang_id', $request->barang_id)->increment('stok', $request->jumlah_karung);
+        Pupuk::where('pupuk_id', $request->pupuk_id)->increment('stok', $request->jumlah_karung);
 
         return redirect()->route('dashboard.master-data.produksi')->with('success', 'Produksi berhasil ditambahkan');
     }
@@ -73,26 +73,26 @@ class ProduksiController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'barang_id' => 'required',
+            'pupuk_id' => 'required',
             'tanggal_produksi' => 'required',
             'jumlah_karung' => 'required',
         ], [
-            'barang_id.required' => 'Barang harus diisi',
+            'pupuk_id.required' => 'Barang harus diisi',
             'tanggal_produksi.required' => 'Tanggal Produksi harus diisi',
             'jumlah_karung.required' => 'Jumlah Karung harus diisi',
         ]);
 
-        Pupuk::where('barang_id', $request->barang_id)
+        Pupuk::where('pupuk_id', $request->pupuk_id)
             ->decrement('stok', Produksi::where('produksi_id', $id)->first()->jumlah_karung);
 
         Produksi::findOrFail($id)->update([
-            'barang_id' => $request->barang_id,
+            'pupuk_id' => $request->pupuk_id,
             'tanggal_produksi' => $request->tanggal_produksi,
             'jumlah_karung' => $request->jumlah_karung,
             'note' => $request->note
         ]);
 
-        Pupuk::where('barang_id', $request->barang_id)
+        Pupuk::where('pupuk_id', $request->pupuk_id)
             ->increment('stok', $request->jumlah_karung);
 
         return redirect()->route('dashboard.master-data.produksi')->with('success', 'Produksi berhasil diubah');
@@ -101,7 +101,7 @@ class ProduksiController extends Controller
     public function destroy($id)
     {
         $produksi = Produksi::findOrFail($id);
-        Pupuk::where('barang_id', $id)
+        Pupuk::where('pupuk_id', $id)
             ->decrement('stok', $produksi->jumlah_karung);
         Produksi::findOrFail($id)->delete();
         return redirect()->route('dashboard.master-data.produksi')->with('success', 'Produksi berhasil dihapus');

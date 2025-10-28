@@ -30,7 +30,7 @@ class CartController extends Controller
     public function cartStore(Request $request)
     {
         $request->validate([
-            'produk_id' => 'required|exists:pupuk,barang_id',
+            'produk_id' => 'required|exists:pupuk,pupuk_id',
             'qty' => 'required|integer|min:1',
         ], [
             'produk_id.required' => 'Produk harus dipilih.',
@@ -87,7 +87,7 @@ class CartController extends Controller
             }
 
             $detail = DetailPesanan::where('pesanan_id', $cart->pesanan_id)
-                ->where('barang_id', $produk->barang_id)
+                ->where('pupuk_id', $produk->pupuk_id)
                 ->first();
 
             if ($detail) {
@@ -97,7 +97,7 @@ class CartController extends Controller
             } else {
                 DetailPesanan::create([
                     'pesanan_id' => $cart->pesanan_id,
-                    'barang_id' => $produk->barang_id,
+                    'pupuk_id' => $produk->pupuk_id,
                     'qty_karung' => $qty,
                     'subtotal' => $subtotal,
                 ]);
@@ -118,7 +118,7 @@ class CartController extends Controller
     public function updateQty(Request $request)
     {
         $request->validate([
-            'produk_id' => 'required|exists:pupuk,barang_id',
+            'produk_id' => 'required|exists:pupuk,pupuk_id',
             'action' => 'required|in:increase,decrease',
         ], [
             'produk_id.required' => 'Produk harus dipilih.',
@@ -137,7 +137,7 @@ class CartController extends Controller
         }
 
         $detail = DetailPesanan::where('pesanan_id', $pesanan->pesanan_id)
-            ->where('barang_id', $request->produk_id)
+            ->where('pupuk_id', $request->produk_id)
             ->first();
 
         if (!$detail) {
@@ -166,7 +166,7 @@ class CartController extends Controller
 
 
 
-    public function cartDestroy($pesanan_id, $barang_id)
+    public function cartDestroy($pesanan_id, $pupuk_id)
     {
         $pesanan = Pesanan::where('pesanan_id', $pesanan_id)
             ->where('created_by', Auth::id())
@@ -174,7 +174,7 @@ class CartController extends Controller
             ->firstOrFail();
 
         $detailPesanan = DetailPesanan::where('pesanan_id', $pesanan->pesanan_id)
-            ->where('barang_id', $barang_id)
+            ->where('pupuk_id', $pupuk_id)
             ->first();
 
         if (!$detailPesanan) {

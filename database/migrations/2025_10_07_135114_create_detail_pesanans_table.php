@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('detail_pesanan', function (Blueprint $table) {
             $table->id('detailPesanan_id');
             $table->foreignIdFor(Pesanan::class, 'pesanan_id')->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Pupuk::class, 'barang_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Pupuk::class, 'pupuk_id')->constrained()->onDelete('cascade');
             $table->integer('qty_karung');
             $table->decimal('subtotal', 15, 2);
             $table->timestamps();

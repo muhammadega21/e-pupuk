@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pupuk extends Model
 {
     protected $table = 'pupuk';
-    protected $primaryKey = 'barang_id';
+    protected $primaryKey = 'pupuk_id';
     protected $fillable = ['nama', 'jenis', 'berat', 'harga', 'stok', 'status', 'slug', 'gambar'];
     public function produksi()
     {
-        return $this->hasMany(Produksi::class, 'barang_id');
+        return $this->hasMany(Produksi::class, 'pupuk_id');
     }
     public function detailPesanan()
     {
-        return $this->hasMany(DetailPesanan::class, 'barang_id');
+        return $this->hasMany(DetailPesanan::class, 'pupuk_id');
     }
 }

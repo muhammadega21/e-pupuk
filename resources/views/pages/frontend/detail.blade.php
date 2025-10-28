@@ -19,7 +19,7 @@
                         {{ $pupuk->stok }}</p>
                     <form action="{{ route('cart.store') }}" method="POST" class="flex items-center gap-3 mt-3">
                         @csrf
-                        <input type="hidden" name="produk_id" value="{{ $pupuk->barang_id }}">
+                        <input type="hidden" name="produk_id" value="{{ $pupuk->pupuk_id }}">
 
                         <!-- Input Qty -->
                         <div class="flex items-center border border-gray-300 rounded-md overflow-hidden">

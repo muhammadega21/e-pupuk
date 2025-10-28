@@ -83,7 +83,7 @@
                 const modal = new Modal(editModalEl);
 
                 $('#edit_tanggal_produksi').val('Memuat...');
-                $('#edit_barang_id').val('');
+                $('#edit_pupuk_id').val('');
                 $('#edit_jumlah_karung').val('');
                 $('#edit_note').val('');
 
@@ -91,7 +91,7 @@
 
                 $.get(`/dashboard/produksi/${id}/edit`, function(data) {
                     $('#edit_tanggal_produksi').val(data.tanggal_produksi);
-                    $('#edit_barang_id').val(data.barang_id);
+                    $('#edit_pupuk_id').val(data.pupuk_id);
                     $('#edit_jumlah_karung').val(data.jumlah_karung);
                     $('#edit_note').val(data.note);
 
@@ -132,12 +132,12 @@
                 </div>
                 <div class="mb-3">
                     <label class="block text-sm font-medium text-gray-700">Pupuk</label>
-                    <select name="barang_id" id="barang_id"
+                    <select name="pupuk_id" id="pupuk_id"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required>
                         <option value="">Pilih Pupuk</option>
                         @foreach ($barangs as $barang)
-                            <option value="{{ $barang->barang_id }}">{{ $barang->nama }}</option>
+                            <option value="{{ $barang->pupuk_id }}">{{ $barang->nama }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -173,12 +173,12 @@
                 </div>
                 <div class="mb-3">
                     <label class="block text-sm font-medium text-gray-700">Pupuk</label>
-                    <select name="barang_id" id="edit_barang_id"
+                    <select name="pupuk_id" id="edit_pupuk_id"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required>
                         <option value="">Pilih Pupuk</option>
                         @foreach ($barangs as $barang)
-                            <option value="{{ $barang->barang_id }}">{{ $barang->nama }}</option>
+                            <option value="{{ $barang->pupuk_id }}">{{ $barang->nama }}</option>
                         @endforeach
                     </select>
                 </div>
