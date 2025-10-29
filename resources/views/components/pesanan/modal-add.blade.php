@@ -149,7 +149,7 @@
         $('#metode_pembayaran').on('change', function() {
             if ($(this).val() === 'transfer') {
                 $('#buktiPembayaranWrapper').removeClass('hidden');
-                $('#bukti_url').attr('required', true);
+                $('#bukti_url').attr('required', false);
             } else {
                 $('#buktiPembayaranWrapper').addClass('hidden');
                 $('#bukti_url').removeAttr('required');

@@ -19,6 +19,13 @@ class DetailPesananController extends Controller
 
     public function updatePembayaran(Request $request, $id)
     {
+        $request->validate([
+            'total_bayar' => 'required|numeric|max:1000000000',
+        ], [
+            'total_bayar.required' => 'Total bayar wajib diisi.',
+            'total_bayar.numeric' => 'Total bayar harus berupa angka.',
+            'total_bayar.max' => 'Total bayar terlalu besar.',
+        ]);
         $pesanan = Pesanan::with(['pembayaran'])->findOrFail($id);
         $statusBayar = $request->input('status_bayar');
         $totalBayar = $request->input('total_bayar');

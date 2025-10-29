@@ -57,3 +57,23 @@
         <button class="ml-2 px-4 py-2 bg-primary text-white rounded-md cursor-pointer">Cari</button>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cari elemen dropdown
+        const dropdown = document.querySelector('.dropdown');
+        const dropdownContent = dropdown?.querySelector('.dropdown-content');
+
+        // Tutup dropdown saat item di dalamnya diklik
+        if (dropdownContent) {
+            dropdownContent.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('click', () => {
+                    dropdownContent.classList.add('hidden');
+                    setTimeout(() => {
+                        dropdownContent.classList.remove('hidden');
+                    }, 300); // reset agar dropdown bisa dibuka lagi nanti
+                });
+            });
+        }
+    });
+</script>

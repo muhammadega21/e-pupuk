@@ -200,14 +200,18 @@
                     class="py-2.5 px-5 text-sm font-medium bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200">
                     Kembali
                 </button>
-                <div class="flex gap-x-3">
-                    <input type="submit" name="status_bayar"
-                        class="cursor-pointer text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
-                        value="Tolak">
-                    <input type="submit" name="status_bayar"
-                        class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
-                        value="Terima">
-                </div>
+                @if ($pesanan->pembayaran->status === 'verified')
+                    <span class="text-green-600 font-semibold">Pembayaran sudah diterima.</span>
+                @else
+                    <div class="flex gap-x-3">
+                        <input type="submit" name="status_bayar"
+                            class="cursor-pointer text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                            value="Tolak">
+                        <input type="submit" name="status_bayar"
+                            class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                            value="Terima">
+                    </div>
+                @endif
             </div>
         </form>
     </x-modal>
@@ -292,8 +296,12 @@
                         class="py-2.5 px-5 text-sm font-medium bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200">
                         Batal
                     </button>
-                    <button type="submit"
-                        class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Update</button>
+                    @if ($pesanan->pengiriman->status === 'delivered')
+                        <span class="text-green-600 font-semibold">Barang sudah diterima.</span>
+                    @else
+                        <button type="submit"
+                            class="cursor-pointer text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Update</button>
+                    @endif
                 </div>
             </form>
         </x-modal>

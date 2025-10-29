@@ -102,7 +102,8 @@ class KaryawanController extends Controller
         $user = User::findOrFail($id);
 
         $user->update([
-            'role_id' => $request->role_id
+            'role_id' => $request->role_id,
+            'status' => $request->status
         ]);
 
         $user->user_data()->update([

@@ -19,6 +19,7 @@ class PesananController extends Controller
 {
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
             if (Auth::user()->hasRole('pelanggan')) {
                 $data = Pesanan::where('handled_by', Auth::id())->with(['user_data', 'pengiriman'])->latest();
@@ -59,10 +60,11 @@ class PesananController extends Controller
         $barangs = Pupuk::select(['pupuk_id', 'nama', 'harga'])->get();
         $order_no = 'ORD-' . str_pad(random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
 
+
         return view('pages.dashboard.transaksi.pesanan', [
             'title' => 'Data Pesanan',
             'barangs' => $barangs,
-            'order_no' => $order_no
+            'order_no' => $order_no,
         ]);
     }
 
@@ -163,6 +165,95 @@ class PesananController extends Controller
     {
         $pesanan = Pesanan::with(['detailPesanan', 'pembayaran', 'pengiriman'])->findOrFail($id);
 
+        if ($pesanan->payment_status === 'paid' && $pesanan->fulfillment_status === 'delivered') {
+            return back()->with('error', 'Pesanan sudah dibayar dan dikirim, tidak dapat diedit.');
+        }
+
+        if ($pesanan->payment_status === 'paid') {
+            $validated = $request->validate([
+                'nama_penerima' => 'required_if:order_type,delivery',
+                'telepon' => 'required_if:order_type,delivery',
+                'alamat' => 'required_if:order_type,delivery',
+            ]);
+
+            if ($pesanan->fulfillment_status !== 'delivered' && $pesanan->order_type === 'delivery') {
+                $ongkir = $this->hitungOngkir($validated['alamat']);
+                $pesanan->pengiriman()->updateOrCreate(
+                    ['pesanan_id' => $pesanan->pesanan_id],
+                    [
+                        'nama_penerima' => $validated['nama_penerima'],
+                        'telepon' => $validated['telepon'],
+                        'alamat' => $validated['alamat'],
+                        'ongkir' => $ongkir < 1000 ? 0 : $ongkir,
+                        'tgl_kirim' => now(),
+                    ]
+                );
+            }
+
+            return redirect()->route('dashboard.transaksi.pesanan')
+                ->with('success', 'Data pengiriman berhasil diperbarui.');
+        }
+
+        if ($pesanan->fulfillment_status === 'delivered') {
+            $validated = $request->validate([
+                'order_type' => 'required|in:pickup,delivery',
+                'pupuk_id' => 'required|array|min:1',
+                'pupuk_id.*' => 'exists:pupuk,pupuk_id',
+                'total_karung' => 'required|array|min:1',
+                'total_karung.*' => 'numeric|min:1',
+                'total_bayar' => 'required|numeric|min:0',
+                'metode_pembayaran' => 'required|in:cash,transfer',
+                'bukti_url' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
+
+            DB::transaction(function () use ($validated, $request, $pesanan) {
+                $buktiPath = $pesanan->pembayaran->bukti_url;
+                if ($request->hasFile('bukti_url')) {
+                    if ($buktiPath) {
+                        Storage::disk('public')->delete($buktiPath);
+                    }
+                    $buktiPath = Storage::disk('public')->putFile('bukti_pembayaran', $request->file('bukti_url'));
+                }
+
+                $pesanan->update([
+                    'order_type' => $validated['order_type'],
+                    'total_karung' => array_sum($validated['total_karung']),
+                    'total_bayar' => $validated['total_bayar'],
+                ]);
+
+                foreach ($pesanan->detailPesanan as $detail) {
+                    Pupuk::where('pupuk_id', $detail->pupuk_id)->increment('stok', $detail->qty_karung);
+                    $detail->delete();
+                }
+
+                foreach ($validated['pupuk_id'] as $i => $barangId) {
+                    $barang = Pupuk::find($barangId);
+                    $qty = $validated['total_karung'][$i];
+                    $subtotal = $barang->harga * $qty;
+
+                    DetailPesanan::create([
+                        'pesanan_id' => $pesanan->pesanan_id,
+                        'pupuk_id' => $barangId,
+                        'qty_karung' => $qty,
+                        'subtotal' => $subtotal,
+                    ]);
+
+                    Pupuk::where('pupuk_id', $barangId)->decrement('stok', $qty);
+                }
+
+                $status = $validated['metode_pembayaran'] === 'cash' ? 'verified' : 'pending';
+                $pesanan->pembayaran->update([
+                    'metode' => $validated['metode_pembayaran'],
+                    'bukti_url' => $buktiPath,
+                    'total_bayar' => $validated['total_bayar'],
+                    'status' => $status,
+                ]);
+            });
+
+            return redirect()->route('dashboard.transaksi.pesanan')
+                ->with('success', 'Data pembayaran berhasil diperbarui.');
+        }
+
         $validated = $request->validate([
             'order_type' => 'required|in:pickup,delivery',
             'pupuk_id' => 'required|array|min:1',
@@ -230,7 +321,6 @@ class PesananController extends Controller
                 }
             }
 
-            // Update pembayaran
             $status = $validated['metode_pembayaran'] === 'cash' ? 'verified' : 'pending';
             $pesanan->pembayaran->update([
                 'metode' => $validated['metode_pembayaran'],
@@ -243,6 +333,7 @@ class PesananController extends Controller
         return redirect()->route('dashboard.transaksi.pesanan')
             ->with('success', 'Pesanan berhasil diperbarui.');
     }
+
 
 
     public function destroy($id)

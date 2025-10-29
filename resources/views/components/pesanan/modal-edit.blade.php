@@ -107,19 +107,16 @@
         modal.show();
 
         $.get(`/dashboard/pesanan/${id}/edit`, function(data) {
-            // Isi data utama
             $('#edit_order_no').val(data.order_no);
             $('#edit_order_type').val(data.order_type);
             $('#edit_total_bayar').val(data.total_bayar);
             $('#edit_metode_pembayaran').val(data.pembayaran.metode);
 
-            // tampilkan bukti
             if (data.pembayaran.bukti_url) {
                 $('#edit_preview_bukti').attr('src', '/storage/' + data.pembayaran.bukti_url)
                     .removeClass('hidden');
             }
 
-            // tampilkan data pengiriman
             if (data.order_type === 'delivery' && data.pengiriman) {
                 $('#editDeliverySection').removeClass('hidden');
                 $('#edit_nama_penerima').val(data.pengiriman.nama_penerima);
@@ -129,7 +126,39 @@
                 $('#editDeliverySection').addClass('hidden');
             }
 
-            // tampilkan produk
+            const isPaid = data.payment_status === 'paid';
+            const isDelivered = data.fulfillment_status === 'delivered';
+
+            $('#editPesananForm').find('input, select, textarea, button').prop('disabled', false);
+
+            if (isPaid && isDelivered) {
+                $('#editPesananForm').find('input, select, textarea, button').prop('disabled', true);
+                $('#editPesananForm').find('[data-modal-hide="editPesanan"]').prop('disabled', false);
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Pesanan Selesai',
+                    text: 'Pesanan ini sudah dibayar dan dikirim. Tidak dapat diedit.',
+                    confirmButtonColor: '#3085d6'
+                });
+            } else if (isPaid) {
+                $('#edit_metode_pembayaran, #edit_bukti_url, #editAddPupuk').prop('disabled', true);
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Pembayaran Selesai',
+                    text: 'Data pembayaran tidak dapat diubah karena status sudah "paid".',
+                    confirmButtonColor: '#3085d6'
+                });
+            } else if (isDelivered) {
+                $('#edit_order_type, #edit_nama_penerima, #edit_telepon, #edit_alamat').prop('disabled',
+                    true);
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Pesanan Terkirim',
+                    text: 'Data pengiriman tidak dapat diubah karena status sudah "delivered".',
+                    confirmButtonColor: '#3085d6'
+                });
+            }
+
             let html = '';
             data.detail_pesanan.forEach((item, index) => {
                 let options = `
@@ -174,14 +203,12 @@
             });
 
 
-            // update action form
             $('#editPesananForm').attr('action', `/dashboard/pesanan/${id}`);
         }).fail(function() {
             alert('Gagal memuat data pesanan.');
         });
     });
 
-    // event perhitungan ulang subtotal dan total
     $(document).on('change keyup', '.edit_pupuk_id, .edit_total_karung', function() {
         let item = $(this).closest('.pupuk-item');
         let harga = $('option:selected', item.find('.edit_pupuk_id')).data('harga') || 0;
@@ -199,11 +226,9 @@
         $('#edit_total_bayar').val(total.toFixed(2));
     }
 
-    // Tambah baris pupuk di modal edit
     $(document).on('click', '#editAddPupuk', () => clonePupukItem('#editPupukContainer'));
 
 
-    // jika metode pembayaran transfer → tampilkan upload
     $('#edit_metode_pembayaran').on('change', function() {
         if ($(this).val() === 'transfer') {
             $('#editBuktiPembayaranWrapper').removeClass('hidden');
@@ -212,7 +237,6 @@
         }
     });
 
-    // jika delivery → tampilkan form alamat
     $('#edit_order_type').on('change', function() {
         if ($(this).val() === 'delivery') {
             $('#editDeliverySection').removeClass('hidden');

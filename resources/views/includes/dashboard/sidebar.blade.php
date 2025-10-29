@@ -74,7 +74,7 @@
             </ul>
         </div>
     </div>
-    <div class="p-4 mt-3 border-t border-gray-200">
+    {{-- <div class="p-4 mt-3 border-t border-gray-200">
         <form method="POST" action="/logout">
             @csrf
             <button type="submit"
@@ -83,5 +83,5 @@
                 <span>Logout</span>
             </button>
         </form>
-    </div>
+    </div> --}}
 </section>

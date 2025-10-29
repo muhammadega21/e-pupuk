@@ -22,6 +22,7 @@
                     <th>Nama Karyawan</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -60,6 +61,12 @@
                             name: 'role.role_name',
                         },
                         {
+                            data: 'status',
+                            name: 'status',
+                            orderable: false,
+                            searchable: false,
+                        },
+                        {
                             data: 'action',
                             name: 'action',
                             orderable: false,
@@ -86,6 +93,7 @@
                     $('#edit_karyawan_alamat').val(data.user_data.alamat);
                     $('#edit_karyawan_telepon').val(data.user_data.telepon);
                     $('#edit_karyawan_role').val(data.role_id);
+                    $('#edit_karyawan_status').val(data.status);
                     $('#editKaryawanForm').attr('action', `/dashboard/karyawan/${id}`);
                 }).fail(function() {
                     alert('Gagal memuat data karyawan.');
@@ -179,6 +187,15 @@
                     <input type="text" name="telepon" id="edit_karyawan_telepon"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Status</label>
+                    <select name="status" id="edit_karyawan_status"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="aktif">Aktif</option>
+                        <option value="tidak aktif">Tidak Aktif</option>
+                    </select>
                 </div>
 
                 <div class="flex items-center gap-x-3 justify-end mt-3">

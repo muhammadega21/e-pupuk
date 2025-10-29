@@ -33,9 +33,16 @@
                         </div>
 
                         <!-- Tombol Beli -->
-                        <button type="submit" class="btn btn-primary px-6 py-2 text-white rounded-md">
-                            Beli Sekarang
-                        </button>
+                        @auth
+                            <button type="submit" class="btn btn-primary px-6 py-2 text-white rounded-md">
+                                Masuk Keranjang
+                            </button>
+                        @endauth
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary px-6 py-2 text-white rounded-md">
+                                Masuk Keranjang
+                            </a>
+                        @endguest
                     </form>
                 </div>
                 <div class="my-4 border-t border-gray-300 mb-4">
