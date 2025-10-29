@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Pupuk;
-use App\Models\Produksi;
 use App\Models\UserData;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
@@ -72,6 +72,37 @@ class DatabaseSeeder extends Seeder
             'telepon' => '08123456789'
         ]);
 
+        $faker = Faker::create('id_ID');
+        for ($i = 1; $i <= 3; $i++) {
+            $user = User::create([
+                'email' => $faker->unique()->safeEmail(),
+                'password' => Hash::make('karyawan123'),
+                'role_id' => 2,
+            ]);
+
+            UserData::create([
+                'user_id' => $user->user_id ?? $user->id,
+                'nama' => $faker->name(),
+                'alamat' => $faker->address(),
+                'telepon' => $faker->phoneNumber(),
+            ]);
+        }
+
+        for ($i = 1; $i <= 10; $i++) {
+            $user = User::create([
+                'email' => $faker->unique()->safeEmail(),
+                'password' => Hash::make('pelanggan123'),
+                'role_id' => 3,
+            ]);
+
+            UserData::create([
+                'user_id' => $user->user_id ?? $user->id,
+                'nama' => $faker->name(),
+                'alamat' => $faker->address(),
+                'telepon' => $faker->phoneNumber(),
+            ]);
+        }
+
         $dataPupuk = [
             [
                 'nama' => 'Pupuk Organik Serbuk',
@@ -85,7 +116,7 @@ class DatabaseSeeder extends Seeder
                 'nama' => 'Pupuk Organik Granul',
                 'jenis' => 'Organik',
                 'berat' => 50,
-                'stok' => 80,
+                'stok' => 100,
                 'harga' => 75000,
                 'gambar' => 'pupuk_organik_granul.jpg',
             ],
