@@ -70,7 +70,7 @@ class CheckoutController extends Controller
             $pembayaran_status = $request->metode_pembayaran === 'cash' ? 'verified' : 'pending';
 
             $cart->update([
-                'channel' => 'store',
+                'channel' => 'online',
                 'order_type' => 'delivery',
                 'payment_status' => $payment_status,
                 'fulfillment_status' => 'new',

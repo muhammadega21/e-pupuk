@@ -13,7 +13,15 @@ class ProduksiController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Produksi::with('barang')->latest()->get();
+            $data = Produksi::with('barang')->latest();
+
+            if ($request->has('start_date') && $request->start_date) {
+                $data->whereDate('tanggal_produksi', '>=', $request->start_date);
+            }
+
+            if ($request->has('end_date') && $request->end_date) {
+                $data->whereDate('tanggal_produksi', '<=', $request->end_date);
+            }
 
             return DataTables::of($data)
                 ->addIndexColumn()

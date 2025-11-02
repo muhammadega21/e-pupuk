@@ -21,10 +21,19 @@ class PesananController extends Controller
     {
 
         if ($request->ajax()) {
+
             if (Auth::user()->hasRole('pelanggan')) {
                 $data = Pesanan::where('handled_by', Auth::id())->with(['user_data', 'pengiriman'])->latest();
             } else {
                 $data = Pesanan::with(['user_data', 'pengiriman'])->latest();
+            }
+
+            if ($request->has('start_date') && $request->start_date) {
+                $data->whereDate('tanggal_transaksi', '>=', $request->start_date);
+            }
+
+            if ($request->has('end_date') && $request->end_date) {
+                $data->whereDate('tanggal_transaksi', '<=', $request->end_date);
             }
 
             return DataTables::of($data)
@@ -32,6 +41,13 @@ class PesananController extends Controller
                 ->addColumn('action', function ($row) {
                     if ($row->fulfillment_status == 'delivered') {
                         $deliveryConfirmBtn = '<span class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded-md text-sm mr-2">Sudah Diterima</span>';
+                    } else if ($row->channel == 'cart') {
+                        if (Auth::user()->hasRole('pelanggan')) {
+                            $deliveryConfirmBtn = '
+                            <a href="' . route('checkout') . '" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm mr-2">Lanjutkan Pembayaran</a>';
+                        } else {
+                            $deliveryConfirmBtn = '';
+                        }
                     } else {
                         $deliveryConfirmBtn = '
                             <form action="' . route('dashboard.transaksi.pesanan.confirm-delivery', $row->pesanan_id) . '" method="POST" class="confirm-delivery inline-block mr-2">

@@ -43,7 +43,10 @@
                 $('#pupukTable').DataTable({
                     processing: true,
                     serverSide: true,
-                    ajax: "{{ route('dashboard.master-data.pupuk') }}",
+
+                    ajax: {
+                        url: '{{ route('dashboard.master-data.pupuk') }}',
+                    }
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex',
