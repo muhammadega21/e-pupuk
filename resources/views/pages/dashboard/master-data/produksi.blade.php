@@ -90,7 +90,7 @@
                     dom: 'Bfrtip',
                     buttons: [{
                         extend: 'pdfHtml5',
-                        title: 'Laporan Pesanan',
+                        title: 'Laporan Produksi',
                         orientation: 'landscape',
                         pageSize: 'A4',
                         text: '<i class="fa-regular fa-file-pdf"></i> Export PDF',
