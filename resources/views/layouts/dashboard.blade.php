@@ -24,7 +24,7 @@
             class="fixed inset-0 bg-black bg-opacity-40 opacity-0 pointer-events-none transition-opacity duration-300 z-30 md:hidden">
         </div>
 
-        <div class="w-full h-full md:w-[calc(100%-250px)] ms-auto mt-16 px-5 md:px-8 py-10">
+        <div class="w-full h-full md:w-[calc(100%-250px)] ms-auto pt-24 px-5 md:px-8 py-10">
             <div class="bg-white px-4 py-2 border border-gray-300 rounded-md w-max md:w-full">
                 {{ $slot }}
             </div>
