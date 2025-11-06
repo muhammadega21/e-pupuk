@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\MasterData;
 use App\Http\Controllers\Controller;
 use App\Models\Produksi;
 use App\Models\Pupuk;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -113,5 +114,18 @@ class ProduksiController extends Controller
             ->decrement('stok', $produksi->jumlah_karung);
         Produksi::findOrFail($id)->delete();
         return redirect()->route('dashboard.master-data.produksi')->with('success', 'Produksi berhasil dihapus');
+    }
+
+    public function exportPdf()
+    {
+        $produksi = Produksi::with('barang')
+            ->orderBy('tanggal_produksi', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('pages.dashboard.master-data.produksi-pdf', [
+            'produksi' => $produksi,
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->download('laporan-produksi-' . now()->format('Ymd') . '.pdf');
     }
 }

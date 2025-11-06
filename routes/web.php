@@ -81,6 +81,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/produksi/{id}/edit', 'edit')->name('dashboard.master-data.produksi.edit');
                 Route::put('/produksi/{id}', 'update')->name('dashboard.master-data.produksi.update');
                 Route::delete('/produksi/{id}', 'destroy')->name('dashboard.master-data.produksi.destroy');
+                Route::get('/produksi/export/pdf', 'exportPdf')->name('dashboard.master-data.produksi.export.pdf');
             });
         });
 
@@ -92,6 +93,7 @@ Route::middleware('auth')->group(function () {
             Route::put('/pesanan/{id}', 'update')->name('dashboard.transaksi.pesanan.update');
             Route::delete('/pesanan/{id}', 'destroy')->name('dashboard.transaksi.pesanan.destroy');
             Route::post('/pesanan/{id}/confirm-delivery', 'confirmDelivery')->name('dashboard.transaksi.pesanan.confirm-delivery');
+            Route::get('/pesanan/export/pdf', 'exportPdf')->name('dashboard.transaksi.pesanan.export.pdf');
         });
 
         // Detail Pesanan

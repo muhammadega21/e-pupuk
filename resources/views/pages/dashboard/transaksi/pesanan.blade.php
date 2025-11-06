@@ -1,27 +1,6 @@
 <x-dashboard-layout :title="$title">
     @push('styles')
         <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.tailwindcss.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
-        <style>
-            .dt-button.btn {
-                color: #fff !important;
-            }
-
-            .dt-button.btn-danger {
-                background-color: #dc3545 !important;
-                border-color: #dc3545 !important;
-            }
-
-            .dt-search {
-                display: flex;
-                justify-content: end;
-                align-items: center;
-            }
-
-            #pesananTable_wrapper {
-                overflow-x: auto;
-            }
-        </style>
     @endpush
 
     <div class="page-title">
@@ -30,32 +9,17 @@
 
     <div class="mt-4 w-full">
         @if (Auth::user()->hasRole(['admin', 'karyawan']))
-            <div class="flex justify-end mb-3">
+            <div class="flex justify-end mb-3 gap-x-2">
+                <a href="{{ route('dashboard.transaksi.pesanan.export.pdf') }}" target="_blank"
+                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> Export PDF
+                </a>
                 <button data-modal-target="addPesanan" data-modal-toggle="addPesanan"
                     class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm">
                     + Tambah Pesanan
                 </button>
             </div>
         @endif
-
-        <form id="filterForm" class="flex flex-wrap gap-3 mb-3">
-            <div class="w-full md:w-1/4">
-                <label for="start_date" class="block text-sm font-medium text-gray-700">Dari Tanggal</label>
-                <input type="date" id="start_date" name="start_date"
-                    class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">
-            </div>
-            <div class="w-full md:w-1/4">
-                <label for="end_date" class="block text-sm font-medium text-gray-700">Sampai Tanggal</label>
-                <input type="date" id="end_date" name="end_date"
-                    class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">
-            </div>
-            <div class="w-full md:w-1/4 flex items-end">
-                <button type="button" id="filterBtn"
-                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm me-2">Filter</button>
-                <a href="{{ route('dashboard.transaksi.pesanan') }}"
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm">Reset</a>
-            </div>
-        </form>
     </div>
 
     <table id="pesananTable" data-dt-theme="light" class="mt-3">
@@ -82,32 +46,13 @@
         <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/2.3.4/js/dataTables.tailwindcss.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
         <script>
             $(document).ready(function() {
                 let table = $('#pesananTable').DataTable({
                     processing: true,
                     serverSide: true,
-                    dom: 'Bfrtip',
-                    buttons: [{
-                        extend: 'pdfHtml5',
-                        title: 'Laporan Penjualan',
-                        orientation: 'landscape',
-                        pageSize: 'A4',
-                        text: '<i class="fa-regular fa-file-pdf"></i> Export PDF',
-                        className: 'btn btn-danger btn-sm ms-auto',
-                    }],
                     ajax: {
                         url: "{{ route('dashboard.transaksi.pesanan') }}",
-                        data: function(d) {
-                            d.start_date = $('#start_date').val();
-                            d.end_date = $('#end_date').val();
-                        }
                     },
                     columns: [{
                             data: 'DT_RowIndex',
@@ -173,10 +118,6 @@
                         },
                     ]
                 })
-
-                $('#filterBtn').on('click', function() {
-                    table.ajax.reload();
-                });
             })
 
 

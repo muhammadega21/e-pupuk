@@ -8,6 +8,7 @@ use App\Models\DetailPesanan;
 use App\Models\Pembayaran;
 use App\Models\Pengiriman;
 use App\Models\Pupuk;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -350,8 +351,6 @@ class PesananController extends Controller
             ->with('success', 'Pesanan berhasil diperbarui.');
     }
 
-
-
     public function destroy($id)
     {
         $pesanan = Pesanan::findOrFail($id);
@@ -426,5 +425,18 @@ class PesananController extends Controller
             sin($dLon / 2) * sin($dLon / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
         return $radius * $c;
+    }
+
+    public function exportPdf()
+    {
+        $pesanan = Pesanan::with(['user_data', 'pembayaran', 'pengiriman'])
+            ->orderBy('tanggal_transaksi', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('pages.dashboard.transaksi.pdf', [
+            'pesanan' => $pesanan,
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->download('laporan-pesanan-' . now()->format('Ymd') . '.pdf');
     }
 }
