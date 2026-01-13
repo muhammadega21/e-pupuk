@@ -55,27 +55,40 @@
                         },
                         {
                             data: 'nama',
-                            name: 'nama'
+                            name: 'nama',
+                            orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'jenis',
-                            name: 'jenis'
+                            name: 'jenis',
+                            orderable: true,
+                            searchable: true
                         },
                         {
                             data: 'berat',
-                            name: 'berat'
+                            name: 'berat',
+                            orderable: true,
+                            searchable: false
                         },
                         {
                             data: 'stok',
-                            name: 'stok'
+                            name: 'stok',
+                            orderable: true,
+                            searchable: false
+
                         },
                         {
                             data: 'harga',
-                            name: 'harga'
+                            name: 'harga',
+                            orderable: true,
+                            searchable: false
                         },
                         {
                             data: 'status',
-                            name: 'status'
+                            name: 'status',
+                            orderable: true,
+                            searchable: false
                         },
                         {
                             data: 'gambar',

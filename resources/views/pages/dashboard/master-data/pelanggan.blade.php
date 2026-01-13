@@ -44,25 +44,32 @@
                         {
                             data: 'user_data.nama',
                             name: 'user_data.nama',
+                            orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'user_data.alamat',
                             name: 'user_data.alamat',
                             orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'user_data.telepon',
                             name: 'user_data.telepon',
                             orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'email',
                             name: 'email',
                             orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'status',
                             name: 'status',
+                            orderable: true,
+                            searchable: false
                         },
                         {
                             data: 'action',

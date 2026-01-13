@@ -34,7 +34,7 @@ class CheckoutController extends Controller
         $request->validate([
             'nama' => 'required|string|max:100',
             'alamat' => 'required|string|max:255',
-            'telepon' => 'required|string|max:15',
+            'telepon' => 'required|string',
             'bukti_url' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ], [
             'nama.required' => 'Nama wajib diisi.',
@@ -42,7 +42,6 @@ class CheckoutController extends Controller
             'alamat.required' => 'Alamat wajib diisi.',
             'alamat.max' => 'Alamat maksimal 255 karakter.',
             'telepon.required' => 'Telepon wajib diisi.',
-            'telepon.max' => 'Telepon maksimal 15 karakter.',
             'bukti_url.required' => 'Bukti pembayaran wajib diunggah.',
             'bukti_url.image' => 'Bukti pembayaran harus berupa gambar.',
             'bukti_url.mimes' => 'Format gambar harus jpg, jpeg, atau png.',

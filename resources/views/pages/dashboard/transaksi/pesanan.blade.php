@@ -63,15 +63,20 @@
                         {
                             data: 'order_no',
                             name: 'order_no',
-                            orderable: false
+                            orderable: true,
+                            searchable: true
                         },
                         {
                             data: 'tanggal_transaksi',
                             name: 'tanggal_transaksi',
+                            orderable: true,
+                            searchable: false
                         },
                         {
                             data: 'user_data.nama',
                             name: 'user_data.nama',
+                            orderable: false,
+                            searchable: true,
                             orderable: false,
                             render: function(data, type, row) {
                                 return data ? data : (row.pengiriman ? row.pengiriman.nama_penerima :
@@ -81,6 +86,8 @@
                         {
                             data: 'total_bayar',
                             name: 'total_bayar',
+                            orderable: true,
+                            searchable: false,
                             render: function(data) {
                                 return new Intl.NumberFormat('id-ID', {
                                     style: 'currency',
@@ -91,14 +98,20 @@
                         {
                             data: 'order_type',
                             name: 'order_type',
+                            orderable: true,
+                            searchable: true
                         },
                         {
                             data: 'channel',
                             name: 'channel',
+                            orderable: true,
+                            searchable: true
                         },
                         {
                             data: 'payment_status',
                             name: 'payment_status',
+                            orderable: true,
+                            searchable: true,
                             render: function(data) {
                                 return data ? data : '-';
                             }
@@ -106,6 +119,8 @@
                         {
                             data: 'fulfillment_status',
                             name: 'fulfillment_status',
+                            orderable: true,
+                            searchable: true,
                             render: function(data) {
                                 return data ? data : '-';
                             }

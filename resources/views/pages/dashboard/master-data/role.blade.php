@@ -47,6 +47,8 @@
                         {
                             data: 'role_name',
                             name: 'role_name',
+                            orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'action',

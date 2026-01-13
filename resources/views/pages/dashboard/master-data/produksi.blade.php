@@ -56,15 +56,20 @@
                         {
                             data: 'tanggal_produksi',
                             name: 'tanggal_produksi',
+                            orderable: true,
+                            searchable: false
                         },
                         {
                             data: 'barang.nama',
                             name: 'barang.nama',
                             orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'jumlah_karung',
                             name: 'jumlah_karung',
+                            orderable: true,
+                            searchable: false
                         },
                         {
                             data: 'note',

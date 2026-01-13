@@ -50,15 +50,20 @@
                         {
                             data: 'user_data.nama',
                             name: 'user_data.nama',
+                            orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'email',
                             name: 'email',
                             orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'role.role_name',
                             name: 'role.role_name',
+                            orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'status',
