@@ -2,8 +2,8 @@
     class="bg-white fixed top-0 left-0 h-full w-[250px] border-r border-gray-200 flex flex-col justify-between transform transition-transform duration-300 -translate-x-full md:translate-x-0 z-40">
     <div class="mt-4">
         <div class="brand flex items-center gap-x-2 justify-center text-[--color-primary]">
-            <i class="fa-solid fa-cart-shopping text-2xl"></i>
-            <h1 class="font-bold text-2xl">UD Sriwindo</h1>
+            <i class="fa-solid fa-cart-shopping text-xl"></i>
+            <h1 class="font-bold text-xl">Agro Lestarindo</h1>
         </div>
         <div class="side-menu mt-4">
             <ul class="space-y-1 text-gray-700 px-3">

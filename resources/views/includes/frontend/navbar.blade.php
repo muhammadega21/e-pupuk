@@ -1,6 +1,6 @@
 <nav class="h-max md:h-20 w-full border-b border-gray-300 p-5 md:px-20 bg-white">
     <div class="flex gap-x-10 items-center justify-between h-full w-full">
-        <a href="{{ route('home') }}" class="text-nowrap font-bold text-2xl text-primary">Pupuk Sriwindo</a>
+        <a href="{{ route('home') }}" class="text-nowrap font-bold text-2xl text-primary">Agro Lestarindo</a>
         <div class="search-box w-full md:w-1/2 hidden md:flex">
             <input type="text" placeholder="Cari Produk..."
                 class="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">

@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('user_data', function (Blueprint $table) {
             $table->id("data_user_id");
-            $table->foreignIdFor(User::class, 'user_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'user_id')->constrained()->onDelete('cascade')->default(3);
             $table->string('nama');
             $table->string('alamat');
             $table->string('telepon');
