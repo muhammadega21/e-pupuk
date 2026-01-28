@@ -59,6 +59,12 @@ class PesananController extends Controller
                     }
                     $editBtn = '<button data-id="' . $row->pesanan_id . '" class="edit-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm mr-2">Edit</button>';
                     $detailBtn = '<a href="' . route('dashboard.transaksi.detail-pesanan', $row->pesanan_id) . '" class="detail-btn bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm">Detail</a>';
+                    $invoiceBtn = '
+                                <a href="' . route('dashboard.transaksi.pesanan.invoice', $row->pesanan_id) . '"
+                                target="_blank"
+                                class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded-md text-sm mr-2">
+                                    <i class="fa-solid fa-receipt"></i> Invoice
+                                </a>';
                     $deleteForm = '
                         <form action="' . route('dashboard.transaksi.pesanan.destroy', $row->pesanan_id) . '" method="POST" class="delete-form inline-block ml-1">
                             ' . csrf_field() . '
@@ -66,9 +72,9 @@ class PesananController extends Controller
                             <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm">Hapus</button>
                         </form>';
                     if (Auth::user()->hasRole('pelanggan')) {
-                        return $deliveryConfirmBtn . $detailBtn;
+                        return $invoiceBtn . $deliveryConfirmBtn . $detailBtn;
                     } else {
-                        return $deliveryConfirmBtn . $editBtn . $detailBtn . $deleteForm;
+                        return $invoiceBtn . $deliveryConfirmBtn . $editBtn . $detailBtn . $deleteForm;
                     }
                 })
                 ->rawColumns(['action'])
@@ -441,17 +447,16 @@ class PesananController extends Controller
         ]);
     }
 
-    public function exportPdf()
+    public function invoice($id)
     {
-        $pesanan = Pesanan::with(['user_data', 'pembayaran', 'pengiriman'])
-            ->orderBy('tanggal_transaksi', 'desc')
-            ->get();
+        $pesanan = Pesanan::with([
+            'user_data',
+            'detailPesanan.barang',
+            'pengiriman',
+            'pembayaran'
+        ])->findOrFail($id);
 
-        $pdf = Pdf::loadView('pages.dashboard.transaksi.pdf', [
-            'pesanan' => $pesanan,
-        ])->setPaper('a4', 'landscape');
-
-        return $pdf->stream('laporan-pesanan-' . now()->format('Ymd') . '.pdf');
+        return view('pages.dashboard.transaksi.invoice', compact('pesanan'));
     }
 
     public function ajaxHitungOngkir(Request $request)

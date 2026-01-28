@@ -114,6 +114,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/pesanan/{id}', 'destroy')->name('dashboard.transaksi.pesanan.destroy');
             Route::post('/pesanan/{id}/confirm-delivery', 'confirmDelivery')->name('dashboard.transaksi.pesanan.confirm-delivery');
             Route::get('/dashboard/transaksi/pesanan/exportPreview', 'previewPdf')->name('dashboard.transaksi.pesanan.previewPdf');
+            Route::get('/dashboard/transaksi/pesanan/{id}/invoice', 'invoice')->name('dashboard.transaksi.pesanan.invoice');
             Route::post('/ajax/hitung-ongkir', 'ajaxHitungOngkir');
         });
 
