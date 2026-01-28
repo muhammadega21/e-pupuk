@@ -25,6 +25,8 @@ class Regency extends Model
      * @var string
      */
     protected $table = 'regencies';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
      * The attributes that should be hidden for arrays.

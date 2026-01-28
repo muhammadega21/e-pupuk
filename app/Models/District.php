@@ -27,6 +27,8 @@ class District extends Model
      * @var string
      */
     protected $table = 'districts';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
      * The attributes that should be hidden for arrays.

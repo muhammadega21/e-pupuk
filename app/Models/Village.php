@@ -26,6 +26,8 @@ class Village extends Model
      * @var string
      */
     protected $table = 'villages';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
      * The attributes that should be hidden for arrays.
