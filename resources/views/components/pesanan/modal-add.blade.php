@@ -1,4 +1,4 @@
-@props(['order_no', 'barangs'])
+@props(['order_no', 'barangs', 'provinsi'])
 
 <x-modal id="addPesanan" title="Tambah Pesanan">
     <form action="{{ route('dashboard.transaksi.pesanan.store') }}" method="POST" enctype="multipart/form-data">
@@ -102,9 +102,35 @@
                 </div>
             </div>
             <div class="mt-3">
+                <label class="block text-sm font-medium text-gray-700">Provinsi</label>
+                <select id="provinsi" class="w-full border rounded-md px-3 py-2 mb-2">
+                    <option value="">Pilih Provinsi</option>
+                    @foreach ($provinsi as $prov)
+                        <option value="{{ $prov->id }}">{{ $prov->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mt-3">
+                <label class="block text-sm font-medium text-gray-700">Kota / Kabupaten</label>
+                <select id="kabupaten" class="w-full border rounded-md px-3 py-2 mb-2">
+                    <option value="">Pilih Kota / Kabupaten</option>
+                </select>
+            </div>
+            <div class="mt-3">
+                <label class="block text-sm font-medium text-gray-700">Kecamatan</label>
+                <select id="kecamatan" class="w-full border rounded-md px-3 py-2 mb-2">
+                    <option value="">Pilih Kecamatan</option>
+                </select>
+            </div>
+            <div class="mt-3">
                 <label class="block text-sm font-medium text-gray-700">Alamat</label>
                 <textarea name="alamat" id="alamat" class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
                     placeholder="Ulak Karang, Padang"></textarea>
+            </div>
+            <div class="mt-3">
+                <label class="block text-sm font-medium text-gray-700">Ongkir</label>
+                <input type="number" name="ongkir" id="ongkir_input"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 ">
             </div>
         </div>
 
@@ -123,6 +149,63 @@
 </x-modal>
 
 <script>
+    $(document).ready(function() {
+
+        const provinsi = document.getElementById('provinsi');
+        const kota = document.getElementById('kabupaten');
+        const kecamatan = document.getElementById('kecamatan');
+
+        provinsi.addEventListener('change', async function() {
+            kota.innerHTML = '<option>Loading...</option>';
+            kota.disabled = true;
+
+            const res = await fetch(`/ajax/kota/${this.value}`);
+            const data = await res.json();
+
+            kota.innerHTML = '<option value="">Pilih Kota</option>';
+            data.forEach(d => {
+                kota.innerHTML += `<option value="${d.id}">${d.name}</option>`;
+            });
+            kota.disabled = false;
+        });
+
+        kota.addEventListener('change', async function() {
+            kecamatan.innerHTML = '<option>Loading...</option>';
+            kecamatan.disabled = true;
+
+            const res = await fetch(`/ajax/kecamatan/${this.value}`);
+            const data = await res.json();
+
+            kecamatan.innerHTML = '<option value="">Pilih Kecamatan</option>';
+            data.forEach(d => {
+                kecamatan.innerHTML += `<option value="${d.name}">${d.name}</option>`;
+            });
+            kecamatan.disabled = false;
+        });
+
+        kecamatan.addEventListener('change', async function() {
+            const alamat =
+                `${this.value}, ${kota.options[kota.selectedIndex].text}, ${provinsi.options[provinsi.selectedIndex].text}`;
+
+            const res = await fetch('/ajax/hitung-ongkir', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    alamat
+                })
+            });
+
+            const data = await res.json();
+
+            // Ongkir
+            const ongkir = parseInt(data.ongkir) || 0;
+            document.getElementById('ongkir_input').value = ongkir;
+        });
+    });
+
     $(document).ready(function() {
         // Tambah baris pupuk
         $('#addPupuk').click(() => clonePupukItem('#pupukContainer'));

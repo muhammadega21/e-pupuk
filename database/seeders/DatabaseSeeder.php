@@ -22,6 +22,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $this->call([
+            IndoRegionProvinceSeeder::class,
+            IndoRegionRegencySeeder::class,
+            IndoRegionDistrictSeeder::class,
+        ]);
+
         Role::create([
             'role_name' => 'admin'
         ]);

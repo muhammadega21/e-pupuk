@@ -7,6 +7,7 @@ use App\Models\Pesanan;
 use App\Models\DetailPesanan;
 use App\Models\Pembayaran;
 use App\Models\Pengiriman;
+use App\Models\Province;
 use App\Models\Pupuk;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -77,16 +78,19 @@ class PesananController extends Controller
         $barangs = Pupuk::select(['pupuk_id', 'nama', 'harga'])->get();
         $order_no = 'ORD-' . str_pad(random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
 
+        $provinsi = Province::whereIn('id', ['11', '12', '13', '14', '15', '16', '17', '18', '19'])->get();
 
         return view('pages.dashboard.transaksi.pesanan', [
             'title' => 'Data Pesanan',
             'barangs' => $barangs,
             'order_no' => $order_no,
+            'provinsi' => $provinsi
         ]);
     }
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'order_no' => 'required|string',
             'order_type' => 'required|in:pickup,delivery',
@@ -101,6 +105,8 @@ class PesananController extends Controller
             'nama_penerima' => 'required_if:order_type,delivery',
             'telepon' => 'required_if:order_type,delivery',
             'alamat' => 'required_if:order_type,delivery',
+            'ongkir' => 'required_if:order_type,delivery',
+
         ]);
 
         DB::transaction(function () use ($validated, $request) {
@@ -138,17 +144,15 @@ class PesananController extends Controller
                 ]);
             }
 
-            $ongkir = $this->hitungOngkir($request->alamat);
-
             if ($validated['order_type'] === 'delivery') {
                 Pengiriman::create([
                     'pesanan_id' => $pesanan->pesanan_id,
                     'nama_penerima' => $validated['nama_penerima'],
                     'telepon' => $validated['telepon'],
                     'alamat' => $validated['alamat'],
-                    'ongkir' => $ongkir < 1000 ? 0 : $ongkir,
                     'tgl_kirim' => now(),
                     'status' => 'pending',
+                    'ongkir' => $validated['ongkir'],
                 ]);
             }
 
@@ -194,14 +198,13 @@ class PesananController extends Controller
             ]);
 
             if ($pesanan->fulfillment_status !== 'delivered' && $pesanan->order_type === 'delivery') {
-                $ongkir = $this->hitungOngkir($validated['alamat']);
+
                 $pesanan->pengiriman()->updateOrCreate(
                     ['pesanan_id' => $pesanan->pesanan_id],
                     [
                         'nama_penerima' => $validated['nama_penerima'],
                         'telepon' => $validated['telepon'],
                         'alamat' => $validated['alamat'],
-                        'ongkir' => $ongkir < 1000 ? 0 : $ongkir,
                         'tgl_kirim' => now(),
                     ]
                 );
@@ -283,6 +286,7 @@ class PesananController extends Controller
             'nama_penerima' => 'required_if:order_type,delivery',
             'telepon' => 'required_if:order_type,delivery',
             'alamat' => 'required_if:order_type,delivery',
+            'ongkir' => 'required_if:order_type,delivery|numeric|min:0',
         ]);
 
         DB::transaction(function () use ($validated, $request, $pesanan) {
@@ -321,14 +325,13 @@ class PesananController extends Controller
             }
 
             if ($validated['order_type'] === 'delivery') {
-                $ongkir = $this->hitungOngkir($request->alamat);
                 $pesanan->pengiriman()->updateOrCreate(
                     ['pesanan_id' => $pesanan->pesanan_id],
                     [
                         'nama_penerima' => $validated['nama_penerima'],
                         'telepon' => $validated['telepon'],
                         'alamat' => $validated['alamat'],
-                        'ongkir' => $ongkir < 1000 ? 0 : $ongkir,
+                        'ongkir' => $validated['ongkir'],
                         'tgl_kirim' => now(),
                     ]
                 );
@@ -427,6 +430,17 @@ class PesananController extends Controller
         return $radius * $c;
     }
 
+    public function previewPdf()
+    {
+        $pesanan = Pesanan::with(['user_data', 'pembayaran', 'pengiriman'])
+            ->orderBy('tanggal_transaksi', 'desc')
+            ->get();
+
+        return view('pages.dashboard.transaksi.pdf', [
+            'pesanan' => $pesanan,
+        ]);
+    }
+
     public function exportPdf()
     {
         $pesanan = Pesanan::with(['user_data', 'pembayaran', 'pengiriman'])
@@ -437,6 +451,17 @@ class PesananController extends Controller
             'pesanan' => $pesanan,
         ])->setPaper('a4', 'landscape');
 
-        return $pdf->download('laporan-pesanan-' . now()->format('Ymd') . '.pdf');
+        return $pdf->stream('laporan-pesanan-' . now()->format('Ymd') . '.pdf');
+    }
+
+    public function ajaxHitungOngkir(Request $request)
+    {
+        $alamat = $request->alamat; // "Kecamatan, Kota, Provinsi"
+        $ongkir = $this->hitungOngkir($alamat);
+
+        return response()->json([
+            'ongkir' => $ongkir,
+            'formatted' => number_format($ongkir, 2, ',', '.')
+        ]);
     }
 }

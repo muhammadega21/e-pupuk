@@ -10,7 +10,7 @@
     <div class="mt-4 w-full">
         @if (Auth::user()->hasRole(['admin', 'karyawan']))
             <div class="flex justify-end mb-3 gap-x-2">
-                <a href="{{ route('dashboard.transaksi.pesanan.export.pdf') }}" target="_blank"
+                <a href="{{ route('dashboard.transaksi.pesanan.previewPdf') }}" target="_blank"
                     class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm flex items-center gap-2">
                     <i class="fa-solid fa-file-pdf"></i> Export PDF
                 </a>
@@ -88,11 +88,15 @@
                             name: 'total_bayar',
                             orderable: true,
                             searchable: false,
-                            render: function(data) {
+                            render: function(data, type, row) {
+                                $total = parseInt(data);
+                                $ongkir = parseInt(row.pengiriman?.ongkir) || 0;
+
+                                $total_bayar = $total + $ongkir;
                                 return new Intl.NumberFormat('id-ID', {
                                     style: 'currency',
                                     currency: 'IDR'
-                                }).format(data);
+                                }).format($total_bayar);
                             }
                         },
                         {
@@ -169,8 +173,8 @@
                     $(containerSelector).append(newItem);
                 }
             </script>
-            <x-pesanan.modal-add order_no="{{ $order_no }}" :barangs="$barangs" />
-            <x-pesanan.modal-edit order_no="{{ $order_no }}" :barangs="$barangs" />
+            <x-pesanan.modal-add :provinsi="$provinsi" order_no="{{ $order_no }}" :barangs="$barangs" />
+            <x-pesanan.modal-edit :provinsi="$provinsi" order_no="{{ $order_no }}" :barangs="$barangs" />
         @endif
         <x-alert />
     @endpush

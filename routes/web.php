@@ -13,6 +13,9 @@ use App\Http\Controllers\Dashboard\Transaksi\PesananController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
+use App\Models\District;
+use App\Models\Regency;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 // Auth
@@ -37,6 +40,20 @@ Route::delete('/cart/{pesanan_id}/{barang_id}', [CartController::class, 'cartDes
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'checkoutStore'])->name('checkout.store');
 Route::get('/checkout/success', [CheckoutController::class, 'checkoutSuccess'])->name('frontend.checkout.success');
+
+Route::get(
+    '/ajax/kota/{prov}',
+    fn($prov) =>
+    Regency::where('province_id', $prov)->get()
+);
+
+Route::get(
+    '/ajax/kecamatan/{kota}',
+    fn($kota) =>
+    District::where('regency_id', $kota)->get()
+);
+
+Route::post('/ajax/hitung-ongkir', [CheckoutController::class, 'ajaxHitungOngkir']);
 
 
 // Dashboard
@@ -84,7 +101,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/produksi/{id}/edit', 'edit')->name('dashboard.master-data.produksi.edit');
                 Route::put('/produksi/{id}', 'update')->name('dashboard.master-data.produksi.update');
                 Route::delete('/produksi/{id}', 'destroy')->name('dashboard.master-data.produksi.destroy');
-                Route::get('/produksi/export/pdf', 'exportPdf')->name('dashboard.master-data.produksi.export.pdf');
+                Route::get('/produksi/exportPreview', 'previewPdf')->name('dashboard.master-data.produksi.export.pdf');
             });
         });
 
@@ -96,7 +113,8 @@ Route::middleware('auth')->group(function () {
             Route::put('/pesanan/{id}', 'update')->name('dashboard.transaksi.pesanan.update');
             Route::delete('/pesanan/{id}', 'destroy')->name('dashboard.transaksi.pesanan.destroy');
             Route::post('/pesanan/{id}/confirm-delivery', 'confirmDelivery')->name('dashboard.transaksi.pesanan.confirm-delivery');
-            Route::get('/pesanan/export/pdf', 'exportPdf')->name('dashboard.transaksi.pesanan.export.pdf');
+            Route::get('/dashboard/transaksi/pesanan/exportPreview', 'previewPdf')->name('dashboard.transaksi.pesanan.previewPdf');
+            Route::post('/ajax/hitung-ongkir', 'ajaxHitungOngkir');
         });
 
         // Detail Pesanan

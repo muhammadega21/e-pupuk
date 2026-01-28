@@ -9,7 +9,6 @@
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
             margin: 20px;
-            width: 100%;
         }
 
         .header {
@@ -30,14 +29,8 @@
         .info {
             font-size: 13px;
             margin-bottom: 10px;
-        }
-
-        .info .month {
-            text-align: left;
-        }
-
-        .info .date {
-            text-align: right;
+            display: flex;
+            justify-content: space-between
         }
 
         table {
@@ -58,8 +51,11 @@
         }
 
         .footer {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
             margin-top: 20px;
-            text-align: right;
+            /* text-align: right; */
             font-size: 13px;
         }
 
@@ -77,8 +73,24 @@
             border-radius: 4px;
         }
 
+        .btn-export {
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            color: white;
+            background: rgb(243, 10, 10);
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
         @media print {
             .buttons {
+                display: none;
+            }
+
+            .btn-export {
                 display: none;
             }
         }
@@ -123,7 +135,7 @@
                     <td>{{ $item->order_no }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->format('d-m-Y') }}</td>
                     <td>{{ $item->user_data->nama ?? 'Guest' }}</td>
-                    <td>Rp{{ number_format($item->total_bayar, 0, ',', '.') }}</td>
+                    <td>Rp{{ number_format($item->total_bayar + $item->first()->pengiriman->ongkir, 0, ',', '.') }}</td>
                     <td>{{ ucfirst($item->pembayaran->metode ?? '-') }}</td>
                     <td>{{ ucfirst($item->channel ?? '-') }}</td>
                     <td>{{ ucfirst($item->payment_status ?? '-') }}</td>
@@ -137,10 +149,13 @@
     </table>
 
     <div class="footer">
-        Dicetak oleh:<br>
-        <div>
+        Dicetak oleh:
+        <div style="margin-top: 4rem">
             {{ Auth::user()->user_data->nama ?? Auth::user()->nama }} ({{ Auth::user()->role->role_name }})
         </div>
+    </div>
+    <div style="display: flex; justify-content:center; margin-top:3rem;">
+        <button onclick="window.print()" class="btn-export">Export PDF</button>
     </div>
 
 </body>

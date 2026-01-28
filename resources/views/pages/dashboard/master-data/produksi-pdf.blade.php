@@ -9,7 +9,6 @@
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
             margin: 20px;
-            width: 100%;
         }
 
         .header {
@@ -77,8 +76,24 @@
             border-radius: 4px;
         }
 
+        .btn-export {
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            color: white;
+            background: rgb(243, 10, 10);
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
         @media print {
             .buttons {
+                display: none;
+            }
+
+            .btn-export {
                 display: none;
             }
         }
@@ -132,9 +147,13 @@
 
     <div class="footer">
         Dicetak oleh:<br>
-        <div>
+        <div style="margin-top: 4rem">
             {{ Auth::user()->user_data->nama ?? Auth::user()->nama }} ({{ Auth::user()->role->role_name }})
         </div>
+    </div>
+
+    <div style="display: flex; justify-content:center; margin-top:3rem;">
+        <button onclick="window.print()" class="btn-export">Export PDF</button>
     </div>
 
 </body>

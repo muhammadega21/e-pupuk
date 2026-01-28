@@ -116,16 +116,14 @@ class ProduksiController extends Controller
         return redirect()->route('dashboard.master-data.produksi')->with('success', 'Produksi berhasil dihapus');
     }
 
-    public function exportPdf()
+    public function previewPdf()
     {
         $produksi = Produksi::with('barang')
             ->orderBy('tanggal_produksi', 'desc')
             ->get();
 
-        $pdf = Pdf::loadView('pages.dashboard.master-data.produksi-pdf', [
+        return view('pages.dashboard.master-data.produksi-pdf', [
             'produksi' => $produksi,
-        ])->setPaper('a4', 'landscape');
-
-        return $pdf->download('laporan-produksi-' . now()->format('Ymd') . '.pdf');
+        ]);
     }
 }

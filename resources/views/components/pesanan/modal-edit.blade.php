@@ -79,6 +79,11 @@
                 <label class="block text-sm font-medium text-gray-700">Alamat</label>
                 <textarea name="alamat" id="edit_alamat" class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"></textarea>
             </div>
+            <div class="mt-3">
+                <label class="block text-sm font-medium text-gray-700">Ongkir</label>
+                <input type="number" name="ongkir" id="edit_ongkir"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1">
+            </div>
         </div>
 
         <div class="flex justify-end mt-4">
@@ -122,6 +127,7 @@
                 $('#edit_nama_penerima').val(data.pengiriman.nama_penerima);
                 $('#edit_telepon').val(data.pengiriman.telepon);
                 $('#edit_alamat').val(data.pengiriman.alamat);
+                $('#edit_ongkir').val(data.pengiriman.ongkir);
             } else {
                 $('#editDeliverySection').addClass('hidden');
             }

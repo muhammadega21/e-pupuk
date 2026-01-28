@@ -20,7 +20,8 @@
         <ul class="list rounded-box shadow-md h-max">
             @forelse ($carts as $item)
                 <li class="list-row">
-                    <div><img class="size-10 rounded-box" src="{{ asset('storage/' . $item->barang->gambar) }}" />
+                    <div><img class="size-10 rounded-box"
+                            src="{{ asset('storage/' . $item->barang->gambar->first()->gambar_url) }}" />
                     </div>
                     <div>
                         <div>{{ $item->barang->nama }}</div>

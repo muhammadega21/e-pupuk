@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Pembayaran;
 use App\Models\Pesanan;
+use App\Models\Province;
 use App\Models\Pupuk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CheckoutController extends Controller
 {
@@ -22,10 +24,14 @@ class CheckoutController extends Controller
         $ongkir = $pesanan && Pembayaran::where('pesanan_id', $pesanan->pesanan_id)->exists()
             ? Pembayaran::where('pesanan_id', $pesanan->pesanan_id)->first()->ongkir
             : 0;
+
+        $provinsi = Province::whereIn('id', ['11', '12', '13', '14', '15', '16', '17', '18', '19'])->get();
+
         return view('pages.frontend.checkout', [
             'title' => 'Checkout',
             'pesanan' => $pesanan,
             'ongkir' => $ongkir,
+            'provinsi' => $provinsi,
         ]);
     }
 
@@ -36,6 +42,8 @@ class CheckoutController extends Controller
             'alamat' => 'required|string|max:255',
             'telepon' => 'required|string',
             'bukti_url' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'alamat_indoregion' => 'required|string',
+            'ongkir' => 'required|numeric|min:0',
         ], [
             'nama.required' => 'Nama wajib diisi.',
             'nama.max' => 'Nama maksimal 100 karakter.',
@@ -68,12 +76,16 @@ class CheckoutController extends Controller
             $payment_status = $request->metode_pembayaran === 'cash' ? 'paid' : 'pending';
             $pembayaran_status = $request->metode_pembayaran === 'cash' ? 'verified' : 'pending';
 
+            $ongkir = (int) $request->ongkir;
+            $alamatIndo = $request->alamat_indoregion;
+
             $cart->update([
                 'channel' => 'online',
                 'order_type' => 'delivery',
                 'payment_status' => $payment_status,
                 'fulfillment_status' => 'new',
                 'tanggal_transaksi' => now(),
+                'alamat_pengiriman' => $alamatIndo,
             ]);
 
             $pembayaran = Pembayaran::where('pesanan_id', $cart->pesanan_id)->first();
@@ -83,7 +95,6 @@ class CheckoutController extends Controller
                     'tanggal' => now(),
                     'metode' => 'transfer',
                     'bukti_url' => $buktiPath ?? $pembayaran->bukti_url,
-                    'total_bayar' => $cart->total_bayar,
                     'status' => $pembayaran_status,
                 ]);
             } else {
@@ -92,7 +103,6 @@ class CheckoutController extends Controller
                     'tanggal' => now(),
                     'metode' => 'transfer',
                     'bukti_url' => $buktiPath,
-                    'total_bayar' => $cart->total_bayar,
                     'status' => $pembayaran_status,
                 ]);
             }
@@ -101,6 +111,7 @@ class CheckoutController extends Controller
                 $cart->pengiriman->update([
                     'status' => 'pending',
                     'tgl_kirim' => now(),
+                    'ongkir' => $ongkir,
                 ]);
             }
 
@@ -125,6 +136,58 @@ class CheckoutController extends Controller
         return view('pages.frontend.checkout-success', [
             'title' => 'Checkout Berhasil',
             'pesanan' => $pesanan,
+        ]);
+    }
+
+    private function hitungOngkir($alamat)
+    {
+        $apiKey = env('OPENCAGE_API_KEY');
+        $response = Http::get('https://api.opencagedata.com/geocode/v1/json', [
+            'q' => $alamat,
+            'key' => $apiKey,
+            'language' => 'id',
+            'limit' => 1,
+        ]);
+
+        $data = $response->json();
+
+        if (empty($data['results'])) {
+            return 2000;
+        }
+
+        $latTujuan = $data['results'][0]['geometry']['lat'];
+        $lngTujuan = $data['results'][0]['geometry']['lng'];
+
+        $latToko = -0.913602;
+        $lngToko = 100.352629;
+
+        $jarak = $this->hitungJarak($latToko, $lngToko, $latTujuan, $lngTujuan);
+
+        $ongkir = round($jarak * 2000);
+
+        return $ongkir;
+    }
+
+    function hitungJarak($lat1, $lon1, $lat2, $lon2)
+    {
+        $radius = 6371; // radius bumi dalam kilometer
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        return $radius * $c;
+    }
+
+    public function ajaxHitungOngkir(Request $request)
+    {
+        $alamat = $request->alamat; // "Kecamatan, Kota, Provinsi"
+        $ongkir = $this->hitungOngkir($alamat);
+
+        return response()->json([
+            'ongkir' => $ongkir,
+            'formatted' => number_format($ongkir, 2, ',', '.')
         ]);
     }
 }
