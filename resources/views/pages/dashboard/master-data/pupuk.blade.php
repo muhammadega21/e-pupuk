@@ -25,6 +25,7 @@
                     <th>Stok</th>
                     <th>Harga</th>
                     <th>Status</th>
+                    <th>Unggulan</th>
                     <th>Gambar</th>
                     <th>Aksi</th>
                 </tr>
@@ -91,6 +92,16 @@
                             searchable: false
                         },
                         {
+                            data: 'unggulan',
+                            name: 'unggulan',
+                            orderable: true,
+                            searchable: false,
+                            render: function(data, type, row) {
+                                return data == 1 ? '<i class="fa-solid fa-check text-green-500"></i>' :
+                                    '<i class="fa-solid fa-xmark text-red-500"></i>';
+                            }
+                        },
+                        {
                             data: 'gambar',
                             name: 'gambar',
                             orderable: false,
@@ -116,7 +127,7 @@
                 $('#edit_pupuk_berat').val('');
                 $('#edit_pupuk_stok').val('');
                 $('#edit_pupuk_harga').val('');
-                $('#edit_pupuk_status').val('');
+                $('#edit_pupuk_deskripsi').val('');
 
                 modal.show();
 
@@ -126,7 +137,9 @@
                     $('#edit_pupuk_berat').val(data.berat);
                     $('#edit_pupuk_stok').val(data.stok);
                     $('#edit_pupuk_harga').val(data.harga);
+                    $('#edit_pupuk_deskripsi').val(data.deskripsi);
                     $('#edit_pupuk_status').val(data.status);
+                    $('#edit_pupuk_unggulan').prop('checked', data.unggulan == 1);
                     $('#editPupukForm').attr('action', `/dashboard/pupuk/${id}`);
                 }).fail(function() {
                     alert('Gagal memuat data pupuk.');
@@ -168,9 +181,16 @@
                         required>
                 </div>
                 <div class="mb-3">
-                    <label class="block text-sm font-medium text-gray-700">Gambar</label>
-                    <input type="file" name="gambar" id="gambar"
-                        class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1" accept="image/*" required>
+                    <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                    <textarea name="deskripsi" rows="4"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1
+               focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        placeholder="Deskripsi pupuk..." required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Tambah Gambar Baru</label>
+                    <input type="file" name="gambar[]" multiple
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1" accept="image/*">
                 </div>
                 <div class="mb-3">
                     <label class="block text-sm font-medium text-gray-700">Status</label>
@@ -181,6 +201,29 @@
                         <option value="tidak aktif">Tidak Aktif</option>
                     </select>
                 </div>
+
+                <div class="mb-3 flex items-center">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="unggulan" value="1" class="sr-only peer" />
+
+                        <div
+                            class="relative w-9 h-5 bg-gray-300 rounded-full
+                   peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#ff9900]/50
+                   peer-checked:bg-[#ff9900]
+                   after:content-['']
+                   after:absolute after:top-[2px] after:left-[2px]
+                   after:h-4 after:w-4 after:bg-white after:rounded-full
+                   after:transition-transform
+                   peer-checked:after:translate-x-4">
+                        </div>
+
+                        <span class="ml-3 text-sm font-medium text-gray-700 select-none">
+                            Produk Unggulan
+                        </span>
+                    </label>
+                </div>
+
+
                 <div class="flex items-center gap-x-3 justify-end mt-3">
                     <button data-modal-hide="addPupuk" type="button"
                         class="py-2.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">Batal</button>
@@ -230,8 +273,16 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="block text-sm font-medium text-gray-700">Gambar</label>
-                    <input type="file" name="gambar" id="edit_pupuk_gambar"
+                    <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                    <textarea name="deskripsi" id="edit_pupuk_deskripsi" rows="4"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1
+               focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Tambah Gambar Baru</label>
+                    <input type="file" name="gambar[]" multiple
                         class="w-full border border-gray-300 rounded-md px-3 py-2 mt-1" accept="image/*">
                 </div>
 
@@ -244,6 +295,29 @@
                         <option value="tidak aktif">Tidak Aktif</option>
                     </select>
                 </div>
+
+                <div class="mb-3 flex items-center">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="unggulan" id="edit_pupuk_unggulan" value="1"
+                            class="sr-only peer" />
+
+                        <div
+                            class="relative w-9 h-5 bg-gray-300 rounded-full
+                   peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#ff9900]/50
+                   peer-checked:bg-[#ff9900]
+                   after:content-['']
+                   after:absolute after:top-[2px] after:left-[2px]
+                   after:h-4 after:w-4 after:bg-white after:rounded-full
+                   after:transition-transform
+                   peer-checked:after:translate-x-4">
+                        </div>
+
+                        <span class="ml-3 text-sm font-medium text-gray-700 select-none">
+                            Produk Unggulan
+                        </span>
+                    </label>
+                </div>
+
 
                 <div class="flex items-center gap-x-3 justify-end mt-3">
                     <button data-modal-hide="editPupuk" type="button"

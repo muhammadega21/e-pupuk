@@ -17,14 +17,29 @@ class HomeController extends Controller
     {
         return view('pages.frontend.index', [
             'title' => 'Beranda',
-            'pupuk' => Pupuk::latest()->paginate(6),
+            'pupuk' => Pupuk::with('gambar')->latest()->paginate(6),
+        ]);
+    }
+
+    public function produkFeatured()
+    {
+        return view('pages.frontend.featured', [
+            'title' => 'Produk Unggulan',
+            'pupuk' => Pupuk::with('gambar')->where('unggulan', true)->latest()->paginate(6),
+        ]);
+    }
+
+    public function about()
+    {
+        return view('pages.frontend.about', [
+            'title' => 'Tentang Kami'
         ]);
     }
 
     public function produkDetail($slug)
     {
-        $pupuk = Pupuk::where('slug', $slug)->firstOrFail();
-        $pupukLainnya = Pupuk::where('pupuk_id', '!=', $pupuk->pupuk_id)->inRandomOrder()->take(4)->get();
+        $pupuk = Pupuk::with('gambar')->where('slug', $slug)->firstOrFail();
+        $pupukLainnya = Pupuk::with('gambar')->where('pupuk_id', '!=', $pupuk->pupuk_id)->inRandomOrder()->take(4)->get();
 
         return view('pages.frontend.detail', [
             'title' => $pupuk->nama . ' (' . $pupuk->berat . ' Kg)',

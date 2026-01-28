@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('pupuk', function (Blueprint $table) {
             $table->id('pupuk_id');
             $table->string('nama');
+            $table->string('slug')->unique();
             $table->string('jenis');
             $table->integer('berat');
             $table->decimal('harga', 15, 2);
             $table->integer('stok');
-            $table->string('gambar');
+            $table->text('deskripsi');
             $table->enum('status', ['aktif', 'tidak aktif'])->default('aktif');
-            $table->string('slug')->unique();
+            $table->boolean('unggulan')
+                ->default(false);
             $table->timestamps();
         });
     }

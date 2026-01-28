@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Pupuk;
+use App\Models\PupukGambar;
 use App\Models\UserData;
 use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
@@ -110,7 +111,12 @@ class DatabaseSeeder extends Seeder
                 'berat' => 50,
                 'stok' => 100,
                 'harga' => 65000,
-                'gambar' => 'pupuk_organik_serbuk.jpg',
+                'deskripsi' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum nam hic, nulla voluptas tempore quaerat alias veritatis earum dignissimos voluptates!',
+                'unggulan' => true,
+                'gambar' => [
+                    'pupuk_organik_serbuk1.jpg',
+                    'pupuk_organik_serbuk2.png',
+                ],
             ],
             [
                 'nama' => 'Pupuk Organik Granul',
@@ -118,26 +124,42 @@ class DatabaseSeeder extends Seeder
                 'berat' => 50,
                 'stok' => 100,
                 'harga' => 75000,
-                'gambar' => 'pupuk_organik_granul.jpg',
+                'deskripsi' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum nam hic, nulla voluptas tempore quaerat alias veritatis earum dignissimos voluptates!',
+                'unggulan' => false,
+                'gambar' => [
+                    'pupuk_organik_granul1.jpg',
+                    'pupuk_organik_granul2.png',
+                ],
             ],
         ];
 
-        foreach ($dataPupuk as $pupuk) {
-            $sourcePath = database_path('seeders/images/' . $pupuk['gambar']);
-
-            if (file_exists($sourcePath)) {
-                Storage::disk('public')->put('pupuk/' . $pupuk['gambar'], file_get_contents($sourcePath));
-            }
-
-            Pupuk::create([
-                'nama' => $pupuk['nama'],
-                'slug' => Str::slug($pupuk['nama']),
-                'jenis' => $pupuk['jenis'],
-                'berat' => $pupuk['berat'],
-                'stok' => $pupuk['stok'],
-                'harga' => $pupuk['harga'],
-                'gambar' => 'pupuk/' . $pupuk['gambar'],
+        foreach ($dataPupuk as $item) {
+            $pupuk = Pupuk::create([
+                'nama' => $item['nama'],
+                'slug' => Str::slug($item['nama']),
+                'jenis' => $item['jenis'],
+                'berat' => $item['berat'],
+                'stok' => $item['stok'],
+                'deskripsi' => $item['deskripsi'],
+                'harga' => $item['harga'],
+                'unggulan' => $item['unggulan'],
             ]);
+
+            foreach ($item['gambar'] as $gambar) {
+                $sourcePath = database_path('seeders/images/' . $gambar);
+
+                if (file_exists($sourcePath)) {
+                    Storage::disk('public')->put(
+                        'pupuk/' . $gambar,
+                        file_get_contents($sourcePath)
+                    );
+                }
+
+                PupukGambar::create([
+                    'pupuk_id' => $pupuk->pupuk_id,
+                    'gambar_url' => 'pupuk/' . $gambar,
+                ]);
+            }
         }
     }
 }

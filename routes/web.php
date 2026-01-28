@@ -26,6 +26,9 @@ Route::controller(AuthController::class)->group(function () {
 
 // Frontend
 Route::get('/', [FrontendHomeController::class, 'index'])->name('home');
+Route::get('/featured', [FrontendHomeController::class, 'produkFeatured'])->name('featured');
+Route::get('/about', [FrontendHomeController::class, 'about'])->name('about');
+
 Route::get('/produk/{slug}', [FrontendHomeController::class, 'produkDetail'])->name('produk.detail');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 Route::post('/cart', [CartController::class, 'cartStore'])->name('cart.store');

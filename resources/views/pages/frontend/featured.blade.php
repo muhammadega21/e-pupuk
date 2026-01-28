@@ -3,7 +3,7 @@
         <div class="mb-4">
             <div class="breadcrumbs text-sm">
                 <ul>
-                    <li><a href="{{ route('home') }}">Beranda</a></li>
+                    <li><a href="{{ route('featured') }}">Produk Unggulan</a></li>
                     <li>Semua Produk</li>
                 </ul>
             </div>

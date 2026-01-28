@@ -1,13 +1,54 @@
 <x-frontend-layout :title="$title">
-    <h1 class="font-bold pt-5 text-sm block md:hidden"><span class="font-normal">Beranda / Produk</span> /
-        {{ $pupuk->nama }}</h1>
-    <section class="pt-10 flex flex-col md:flex-row gap-10">
-        <div class="w-full md:w-1/3">
-            <img src="{{ asset('/storage/' . $pupuk->gambar) }}" alt="{{ $pupuk->nama }}">
+    <div class="block md:hidden mt-3">
+        <div class="breadcrumbs text-sm">
+            <ul>
+                <li><a href="{{ route('home') }}">Beranda</a></li>
+                <li><a href="{{ route('home') }}">Produk</a></li>
+                <li>{{ $pupuk->nama }}</li>
+            </ul>
+        </div>
+    </div>
+    <section class="pt-3 md:pt-10 flex flex-col md:flex-row gap-10">
+        <div class="w-full flex flex-col md:flex-row gap-x-3 md:w-2/4">
+            <div class="carousel w-full rounded-lg overflow-hidden">
+                @foreach ($pupuk->gambar as $index => $gambar)
+                    <div id="slide{{ $index + 1 }}" class="carousel-item relative w-full">
+                        <img src="{{ asset('storage/' . $gambar->gambar_url) }}" class="w-full object-cover"
+                            alt="{{ $pupuk->nama }}">
+
+                        @if ($pupuk->gambar->count() > 1)
+                            <div
+                                class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                                <a href="#slide{{ $index === 0 ? $pupuk->gambar->count() : $index }}"
+                                    class="btn btn-circle btn-sm">❮</a>
+                                <a href="#slide{{ $index + 1 === $pupuk->gambar->count() ? 1 : $index + 2 }}"
+                                    class="btn btn-circle btn-sm">❯</a>
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+            @if ($pupuk->gambar->count() > 1)
+                <div class="flex flex-row md:flex-col gap-2 mt-3 justify-center md:justify-start">
+                    @foreach ($pupuk->gambar as $index => $gambar)
+                        <a href="#slide{{ $index + 1 }}"
+                            class="w-16 h-16 border rounded overflow-hidden hover:ring-2 ring-primary">
+                            <img src="{{ asset('storage/' . $gambar->gambar_url) }}" class="w-full h-full object-cover">
+                        </a>
+                    @endforeach
+                </div>
+            @endif
         </div>
         <div class="w-full md:w-2/3">
-            <h1 class="font-bold text-sm hidden md:block"><span class="font-normal">Beranda / Produk</span> /
-                {{ $pupuk->nama }}</h1>
+            <div class="hidden md:block">
+                <div class="breadcrumbs text-sm">
+                    <ul>
+                        <li><a href="{{ route('home') }}">Beranda</a></li>
+                        <li><a href="{{ route('home') }}">Produk</a></li>
+                        <li>{{ $pupuk->nama }}</li>
+                    </ul>
+                </div>
+            </div>
             <div class="bg-gray-50 w-full p-5 rounded-md mt-3">
                 <div class="border-b border-dashed border-gray-300 mb-4">
                     <h2 class="font-bold text-3xl mb-2">{{ $pupuk->nama }} ({{ $pupuk->berat }} Kg)</h2>
@@ -65,6 +106,12 @@
                         </tr>
                     </table>
                 </div>
+                <div class="my-4 border-t border-gray-300">
+                    <p class="my-3 font-semibold text-primary">Deskripsi Produk</p>
+                    <p class="text-sm leading-relaxed text-gray-700">
+                        {{ $pupuk->deskripsi }}
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -77,7 +124,8 @@
                 <div
                     class="card bg-base-100 border border-gray-200 shadow-sm h-max hover:shadow-lg hover:scale-102 transition-all duration-300">
                     <figure>
-                        <img src="{{ asset('/storage/' . $item->gambar) }}" alt="{{ $item->nama }}" />
+                        <img src="{{ asset('/storage/' . $item->gambar->first()->gambar_url) }}"
+                            alt="{{ $item->nama }}" />
                     </figure>
                     <div class="card-body border-t border-gray-200">
                         <h2 class="card-title">{{ $item->nama }} ({{ $item->berat }} Kg)</h2>
